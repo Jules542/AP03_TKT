@@ -1,0 +1,55 @@
+// Path: src/stylesheets/base/_reset.scss
+
+$theme-map: null;
+
+$themes: (
+  "dark": (
+    background: #111313,
+    background-dark: #0f1010,
+    background-light: #141414,
+    text: #c4c4c4,
+    text-dark: #b8b8b8,
+    text-light: #ffffff,
+    primary: #00ddff,
+    secondary: #00b7ff,
+    accent: #60d3e2,
+  ),
+  "light": (
+    background: #f0f0f0,
+    background-dark: #e0e0e0,
+    background-light: #f5f5f5,
+    text: #111313,
+    text-dark: #0f1010,
+    text-light: #141414,
+    primary: #00ddff,
+    secondary: #00b7ff,
+    accent: #60d3e2,
+  ),
+);
+
+$success: #66e059;
+$warning: #e0ba59;
+$danger: #e05959;
+
+@mixin themed {
+  // Utilisez une variable locale pour éviter les problèmes de portée
+  $theme-map: null !global;
+  // Pour chaque thème défini dans la variable $themes
+  @each $theme, $map in $themes {
+    // Défini un nouveau matcher .theme--nomdutheme le-matcheur-courant
+    .theme--#{$theme} & {
+      // Défini une variable globale contenant un hash
+      // de toutes les valeurs courantes du theme
+      $theme-map: map-get($themes, $theme) !global;
+      // Exécute le contenu original du mixin
+      @content;
+      // Supprime la variable globale
+      $theme-map: null !global;
+    }
+  }
+}
+
+@function t($key: "") {
+  // Utilisez la fonction map-get avec la clé spécifiée
+  @return map-get($theme-map, $key);
+}
