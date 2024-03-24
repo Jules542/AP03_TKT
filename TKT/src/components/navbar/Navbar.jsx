@@ -11,8 +11,18 @@ const Navbar = () => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/login">Login</Link>
+          <Link to="/attractions">Attractions</Link>
         </li>
+        {!isLoggedIn() && (
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+        )}
+        {isLoggedIn() && (
+          <li>
+            <button onClick={handleLogout}>Logout</button>
+          </li>
+        )}
       </ul>
     </div>
   );

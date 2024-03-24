@@ -3,6 +3,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar.jsx";
 import { ThemeContext } from "./context/ThemeContext.jsx";
 import { UserProvider } from "./context/UserContext.jsx";
+import Attractions from "./pages/Attractions.jsx";
 import Login from "./pages/Login.jsx";
 import "./stylesheets/main.scss";
 
@@ -19,6 +20,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<h1>Welcome to the homepage</h1>} />
+            <Route path="/attractions" element={<Attractions />} />
             <Route path="/login" element={<Login />} />
           </Routes>
         </Router>

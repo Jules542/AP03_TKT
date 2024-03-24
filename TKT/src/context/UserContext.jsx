@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
       try {
         const decodedToken = jwtDecode.jwtDecode(token);
         setUser(decodedToken);
+        console.log(user);
       } catch (error) {
         // If the token is invalid, delete it
         localStorage.removeItem("token");
