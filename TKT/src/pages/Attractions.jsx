@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useMemo, useState } from "react";
 import Attraction from "../components/attractions/Attraction";
+import Searchbar from "../components/attractions/Searchbar";
 import Sidebar from "../components/attractions/Sidebar";
 import Sort from "../components/attractions/Sort";
 
@@ -90,9 +91,8 @@ const Attractions = () => {
         <Sidebar
           filteredAttractions={filteredAttractions}
           setFilteredAttractions={setFilteredAttractions}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
         />
+        <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <div className="attraction__wrapper">
           <Sort sortItem={sortItem} setSortItem={setSortItem} />
           {filteredAttractionsList.map((attraction, index) => (

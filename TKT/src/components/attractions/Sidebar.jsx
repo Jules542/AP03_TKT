@@ -1,12 +1,6 @@
 import React from "react";
-import Searchbar from "./Searchbar";
 
-const Sidebar = ({
-  filteredAttractions,
-  setFilteredAttractions,
-  searchTerm,
-  setSearchTerm,
-}) => {
+const Sidebar = ({ filteredAttractions, setFilteredAttractions }) => {
   const handleFilterChange = (filterKey) => (event) => {
     setFilteredAttractions((prevFilter) => {
       return {
@@ -20,7 +14,6 @@ const Sidebar = ({
       <div className="sidebar__title">
         <h2>Filter</h2>
       </div>
-      <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="sidebar__type">
         <select onChange={(e) => handleFilterChange("attractionTypeFilter")(e)}>
           <option value="">-- Selectionner une option --</option>
