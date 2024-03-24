@@ -25,6 +25,189 @@ connection.connect((error) => {
   }
 });
 
+function verifyToken(req, res, next) {
+  const token = req.headers["x-access-token"];
+  if (!token) {
+    return res.status(403).send({ auth: false, message: "No token provided." });
+  }
+  jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
+    if (err) {
+      return res
+        .status(500)
+        .send({ auth: false, message: "Failed to authenticate token." });
+    }
+    req.userId = decoded.id;
+    req.isAdmin = decoded.isAdmin;
+    next();
+  });
+}
+
+app.post("/login", (req, res) => {
+  const { login, password } = req.body;
+  connection.query(
+    "SELECT login, password, isAdmin FROM user WHERE login = ?",
+    [login],
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({
+          message: "The entered login does not correspond any existing account",
+        });
+      } else {
+        if (results.length > 0) {
+          const user = results[0];
+          bcrypt.compare(password, user.password, function (err, result) {
+            if (result == true) {
+              const token = jwt.sign(
+                { id: user.id, isAdmin: user.isAdmin },
+                process.env.JWT_SECRET,
+                {
+                  expiresIn: 86400,
+                }
+              );
+              res.status(200).send({ auth: true, token: token });
+            } else {
+              res.status(401).send({ message: "Invalid password" });
+            }
+          });
+        } else {
+          res.status(404).send({ message: "User not found" });
+        }
+      }
+    }
+  );
+});
+
+app.post("/register", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+  const { login, password } = req.body;
+  bcrypt.hash(password, saltRound, function (err, hash) {
+    connection.query(
+      "INSERT INTO user (login, password) VALUES (?, ?)",
+      [login, hash],
+      (error) => {
+        if (error) {
+          console.error(error);
+          res.status(500).send({
+            message: "An error occurred during registration",
+          });
+        } else {
+          res.status(201).send({ message: "User registered" });
+        }
+      }
+    );
+  });
+});
+
+app.get("/attractions", (req, res) => {
+  connection.query(
+    "SELECT nomAttraction, tailleMinRequise, tailleMinRequise, tailleMinRequiseAccomp, touteLaFamille, senstationForte, theme.libelle FROM attraction INNER JOIN theme ON idTheme = idThemeAttraction",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+// CRUD for affecting missions
+app.get("/missions", verifyToken, (req, res) => {
+  connection.query(
+    "SELECT idMission, idUser, idAttraction, dateMission, libMission, commentaire, estTerminee, nomAttraction, nom, prenom FROM mission INNER JOIN user ON idUser = idUserMission LEFT JOIN attraction ON idAttraction = idAttractionMission",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+app.post("/missions", verifyToken, (req, res) => {
+  const {
+    dateMission,
+    libMission,
+    commentaire,
+    estTerminee,
+    idUserMission,
+    idAttractionMission,
+  } = req.body;
+  connection.query(
+    "INSERT INTO mission (dateMission, libMission, commentaire, estTerminee, idUserMission, idAttractionMission) VALUES (?, ?, ?, ?, ?, ?)",
+    [
+      dateMission,
+      libMission,
+      commentaire,
+      estTerminee,
+      idUserMission,
+      idAttractionMission,
+    ],
+    (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(201).send({ message: "Mission created" });
+      }
+    }
+  );
+});
+
+app.put("/missions/:id", verifyToken, (req, res) => {
+  const idMission = req.params.id;
+  const {
+    dateMission,
+    libMission,
+    commentaire,
+    estTerminee,
+    idUserMission,
+    idAttractionMission,
+  } = req.body;
+  connection.query(
+    "UPDATE mission SET dateMission = ?, libMission = ?, commentaire = ?, estTerminee = ?, idUserMission = ?, idAttractionMission = ? WHERE idMission = ?",
+    [
+      dateMission,
+      libMission,
+      commentaire,
+      estTerminee,
+      idUserMission,
+      idAttractionMission,
+      idMission,
+    ],
+    (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send({ message: "Mission updated" });
+      }
+    }
+  );
+});
+
+app.delete("/missions/:id", verifyToken, (req, res) => {
+  const idMission = req.params.id;
+  connection.query(
+    "DELETE FROM mission WHERE idMission = ?",
+    [idMission],
+    (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send({ message: "Mission deleted" });
+      }
+    }
+  );
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
