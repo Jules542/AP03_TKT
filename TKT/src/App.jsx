@@ -3,8 +3,10 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar.jsx";
 import { ThemeContext } from "./context/ThemeContext.jsx";
 import { UserProvider } from "./context/UserContext.jsx";
+import AffectationMissions from "./pages/AffectationMissions.jsx";
 import Attractions from "./pages/Attractions.jsx";
 import Login from "./pages/Login.jsx";
+import NouvelleMission from "./pages/NouvelleMission.jsx";
 import "./stylesheets/main.scss";
 
 function App() {
@@ -22,6 +24,14 @@ function App() {
             <Route path="/" element={<h1>Welcome to the homepage</h1>} />
             <Route path="/attractions" element={<Attractions />} />
             <Route path="/login" element={<Login />} />
+            <Route
+              path="affectations"
+              element={<AffectationMissions />}
+            ></Route>
+            <Route
+              path="affectations/nouvelle"
+              element={<NouvelleMission />}
+            ></Route>
           </Routes>
         </Router>
       </UserProvider>
