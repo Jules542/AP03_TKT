@@ -103,7 +103,7 @@ app.post("/register", verifyToken, (req, res) => {
 
 app.get("/attractions", (req, res) => {
   connection.query(
-    "SELECT nomAttraction, tailleMinRequise, tailleMinRequise, tailleMinRequiseAccomp, touteLaFamille, senstationForte, theme.libelle FROM attraction INNER JOIN theme ON idTheme = idThemeAttraction",
+    "SELECT idAttraction, nomAttraction, tailleMinRequise, tailleMinRequise, tailleMinRequiseAccomp, touteLaFamille, senstationForte, theme.libelle FROM attraction INNER JOIN theme ON idTheme = idThemeAttraction",
     (error, results) => {
       if (error) {
         console.error(error);
@@ -115,10 +115,26 @@ app.get("/attractions", (req, res) => {
   );
 });
 
+app.get("/users", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+  connection.query(
+    "SELECT idUser, login, nom, prenom, isAdmin FROM user",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      }
+      res.status(200).send(results);
+    }
+  );
+});
+
 // CRUD for affecting missions
 app.get("/missions", verifyToken, (req, res) => {
   connection.query(
-    "SELECT idMission, idUser, idAttraction, dateMission, libMission, commentaire, estTerminee, nomAttraction, nom, prenom FROM mission INNER JOIN user ON idUser = idUserMission LEFT JOIN attraction ON idAttraction = idAttractionMission",
+    "SELECT idMission, dateMission, libMission, commentaire, estTerminee, idUserMission, idAttractionMission FROM mission",
     (error, results) => {
       if (error) {
         console.error(error);
@@ -161,6 +177,9 @@ app.post("/missions", verifyToken, (req, res) => {
 });
 
 app.put("/missions/:id", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
   const idMission = req.params.id;
   const {
     dateMission,
@@ -193,6 +212,9 @@ app.put("/missions/:id", verifyToken, (req, res) => {
 });
 
 app.delete("/missions/:id", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
   const idMission = req.params.id;
   connection.query(
     "DELETE FROM mission WHERE idMission = ?",
