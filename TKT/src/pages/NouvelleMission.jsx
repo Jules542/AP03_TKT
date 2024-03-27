@@ -1,20 +1,28 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { UserContext } from "../context/UserContext";
 
-const NouvelleMission = ({ users, attractions }) => {
+const NouvelleMission = () => {
+  const { token } = useContext(UserContext);
+  const [missions, setMissions] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [attractions, setAttractions] = useState([]);
   const [formData, setFormData] = useState({
     dateMission: "",
     libMission: "",
     commentaire: "",
     estTerminee: false,
-    idUserMission: "",
-    idAttractionMission: "",
+    idUserMission: users[0]?.idUser,
+    idAttractionMission: attractions[0]?.idAttraction,
   });
-
   const handleChange = (event) => {
+    const value =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.value;
     setFormData({
       ...formData,
-      [event.target.name]: event.target.value,
+      [event.target.name]: value,
     });
   };
 
@@ -24,7 +32,7 @@ const NouvelleMission = ({ users, attractions }) => {
     axios
       .post("http://localhost:3000/missions", formData, {
         headers: {
-          "x-access-token": localStorage.getItem("token"),
+          "x-access-token": token,
         },
       })
       .then((response) => {
@@ -48,7 +56,35 @@ const NouvelleMission = ({ users, attractions }) => {
       .catch((error) => {
         console.error(error);
       });
+
+    axios
+      .get("http://localhost:3000/users", {
+        headers: {
+          "x-access-token": token,
+        },
+      })
+      .then((response) => {
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    axios
+      .get("http://localhost:3000/attractions", {
+        headers: {
+          "x-access-token": token,
+        },
+      })
+      .then((response) => {
+        setAttractions(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
+
+  console.log("coucou", attractions);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -81,8 +117,8 @@ const NouvelleMission = ({ users, attractions }) => {
         onChange={handleChange}
       >
         {Array.isArray(users) &&
-          users.map((user) => (
-            <option key={user.idUser} value={user.idUser}>
+          users.map((user, index) => (
+            <option key={index} value={user.idUser}>
               {user.nom} {user.prenom}
             </option>
           ))}
@@ -92,12 +128,10 @@ const NouvelleMission = ({ users, attractions }) => {
         value={formData.idAttractionMission}
         onChange={handleChange}
       >
+        <option value="0">-- Selectionner une attraction </option>
         {Array.isArray(attractions) &&
-          attractions.map((attraction) => (
-            <option
-              key={attraction.idAttraction}
-              value={attraction.idAttraction}
-            >
+          attractions.map((attraction, index) => (
+            <option key={index} value={attraction.idAttraction}>
               {attraction.nomAttraction}
             </option>
           ))}

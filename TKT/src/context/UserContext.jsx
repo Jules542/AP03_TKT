@@ -7,9 +7,9 @@ export const UserContext = createContext();
 // Create a provider component
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (token) {
       try {
         const decodedToken = jwtDecode.jwtDecode(token);
@@ -65,7 +65,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, handleLogin, handleLogout, isLoggedIn, isAdmin }}
+      value={{ user, token, handleLogin, handleLogout, isLoggedIn, isAdmin }}
     >
       {children}
     </UserContext.Provider>
