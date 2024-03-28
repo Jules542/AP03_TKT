@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState, useContext } from "react";
 import Mission from "../components/user_missions/Mission";
+import Button from "../components/user_missions/Button";
 import { UserContext } from "../context/UserContext";
 import { jwtDecode } from "jwt-decode";
 
@@ -42,6 +43,7 @@ const UserMissions = () => {
                     <Mission key={index} mission={mission} />
                 ))}        
             </div>
+            <Button />
         </div>
     );
 }
