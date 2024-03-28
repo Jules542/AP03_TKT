@@ -45,7 +45,7 @@ function verifyToken(req, res, next) {
 app.post("/login", (req, res) => {
   const { login, password } = req.body;
   connection.query(
-    "SELECT login, password, isAdmin FROM user WHERE login = ?",
+    "SELECT idUser, login, password, isAdmin FROM user WHERE login = ?",
     [login],
     (error, results) => {
       if (error) {
@@ -59,7 +59,7 @@ app.post("/login", (req, res) => {
           bcrypt.compare(password, user.password, function (err, result) {
             if (result == true) {
               const token = jwt.sign(
-                { id: user.id, isAdmin: user.isAdmin },
+                { id: user.idUser, isAdmin: user.isAdmin },
                 process.env.JWT_SECRET,
                 {
                   expiresIn: 86400,
@@ -229,6 +229,21 @@ app.delete("/missions/:id", verifyToken, (req, res) => {
     }
   );
 });
+
+
+// Route pour obtenir les missions en fonction d'un idUser
+app.get("/missionsUser/:idUser", verifyToken, (req, res) => {
+  const idUser = req.params.idUser; // Utilisez req.params pour récupérer le paramètre de l'URL
+  connection.query("SELECT idMission, dateMission, libMission, commentaire, estTerminee, idUserMission, idAttractionMission FROM mission WHERE idUserMission = ?", [idUser], (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send({ message: "An error occurred" });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

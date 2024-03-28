@@ -7,6 +7,7 @@ import AffectationMissions from "./pages/AffectationMissions.jsx";
 import Attractions from "./pages/Attractions.jsx";
 import Login from "./pages/Login.jsx";
 import NouvelleMission from "./pages/NouvelleMission.jsx";
+import UserMissions from "./pages/UserMissions.jsx";
 import "./stylesheets/main.scss";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
               path="affectations/nouvelle"
               element={<NouvelleMission />}
             ></Route>
+            <Route path="/missions" element={<UserMissions />} />
           </Routes>
         </Router>
       </UserProvider>

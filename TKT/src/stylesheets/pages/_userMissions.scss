@@ -1,0 +1,36 @@
+.missions-OTD h1 {
+    font-weight: 500;
+    font-size: 52px;
+}
+
+.mission-container {
+    color: white;
+    border: 1px solid white;
+    width: 26vw;
+    height: 32vh;
+    background-color: #5ACA58;
+    border: 2px solid black;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.mission-list {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 41px;
+    gap: 15px;
+}
+
+.mission-container .mission-description {
+    max-height: 80px;
+    width: 94%;
+    margin: 0 auto;
+    overflow-y: scroll;
+    text-overflow: ellipsis;
+}
+
+.mission-container .mission-description p {
+    font-size: 14px;
+    margin: 0 auto;
+    text-align: justify;
+}    
