@@ -1,5 +1,5 @@
 import React from "react";
-import Commentaire from "./Commentaire";
+import InputsValidation from "./InputsValidation";
 import { useState } from "react";
 
 const Mission = ({ mission }) => {
@@ -20,6 +20,9 @@ const Mission = ({ mission }) => {
         <div className="mission-container">
             <div className="mission-title">
                 <h2>{mission.libMission}</h2>
+                <div className="mission-importance">
+                    {mission.libImportance}
+                </div>
             </div>
             <div className="mission-description">
                 <p>{mission.commentaire}</p>
@@ -27,14 +30,7 @@ const Mission = ({ mission }) => {
             <div className="mission-date">
                 <p>{mission.dateMission}</p>
             </div>
-            {showComment && (
-                <Commentaire onSave={handleSaveComment} />
-            )}
-            {!showComment && (
-                <div className="mission-comment-icon" onClick={toggleComment}>
-                    <img src="public\images\comment-icon.png"></img>
-                </div>
-            )}
+            <InputsValidation />
         </div>
     );
 };

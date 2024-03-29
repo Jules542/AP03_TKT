@@ -234,7 +234,7 @@ app.delete("/missions/:id", verifyToken, (req, res) => {
 // Route pour obtenir les missions en fonction d'un idUser
 app.get("/missionsUser/:idUser", verifyToken, (req, res) => {
   const idUser = req.params.idUser; // Utilisez req.params pour récupérer le paramètre de l'URL
-  connection.query("SELECT idMission, dateMission, libMission, commentaire, estTerminee, idUserMission, idAttractionMission FROM mission WHERE idUserMission = ?", [idUser], (error, results) => {
+  connection.query("SELECT idMission, dateMission, libMission, commentaire, estTerminee, idUserMission, idAttractionMission, libImportance FROM mission INNER JOIN importance ON idImportanceMission = idImportance WHERE idUserMission = ?", [idUser], (error, results) => {
     if (error) {
       console.error(error);
       res.status(500).send({ message: "An error occurred" });
