@@ -12,11 +12,16 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       try {
-        const decodedToken = jwtDecode.jwtDecode(token);
-        setUser(decodedToken);
-        console.log(user);
+        const decodedToken = jwtDecode(token);
+        const current_time = Date.now().valueOf() / 1000;
+        if (decodedToken.exp < current_time) {
+          console.log("Token expired.");
+          localStorage.removeItem("token");
+        } else {
+          setUser(decodedToken);
+          console.log(user);
+        }
       } catch (error) {
-        // If the token is invalid, delete it
         localStorage.removeItem("token");
       }
     }
