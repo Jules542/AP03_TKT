@@ -1,9 +1,22 @@
-.attractions__content {
-  display: flex;
-  margin-top: 20px;
-}
-
 .attraction__wrapper {
   display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   gap: 20px;
+}
+
+.attractions__main {
+  width: 100%;
+}
+
+.attractions__content {
+  height: 100%;
+  display: flex;
+  margin-top: 20px;
+  gap: 1rem;
+}
+
+.attractions__filtering {
+  display: flex;
+  gap: 1rem;
 }

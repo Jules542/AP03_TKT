@@ -92,12 +92,16 @@ const Attractions = () => {
           filteredAttractions={filteredAttractions}
           setFilteredAttractions={setFilteredAttractions}
         />
-        <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <div className="attraction__wrapper">
-          <Sort sortItem={sortItem} setSortItem={setSortItem} />
-          {filteredAttractionsList.map((attraction, index) => (
-            <Attraction key={index} attraction={attraction} />
-          ))}
+        <div className="attractions__main">
+          <div className="attractions__filtering">
+            <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            <Sort sortItem={sortItem} setSortItem={setSortItem} />
+          </div>
+          <div className="attraction__wrapper">
+            {filteredAttractionsList.map((attraction, index) => (
+              <Attraction key={index} attraction={attraction} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
