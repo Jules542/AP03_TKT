@@ -9,13 +9,40 @@ import { jwtDecode } from "jwt-decode";
 const UserMissions = () => {
     const [missions, setMissions] = useState([]);
     const { token } = useContext(UserContext);
+    const [formData, setFormData] = useState({}); // Utilisez un objet pour stocker les données de toutes les missions
 
+    const handleFormChange = (missionId, key, value) => {
+        console.log("data", missionId, key, value);
+        // Mettre à jour l'état avec les données de chaque mission
+        setFormData(prevState => ({
+            ...prevState,
+            [missionId]: {
+                ...prevState[missionId],
+                [key]: value
+            }
+        }));
+    };
+
+    const sendDataToAPI = () => {
+        console.log(formData)
+        // Effectuer la requête HTTP POST vers votre API avec toutes les données
+        axios.put("http://localhost:3000/missionsUser", formData, {
+            headers: {
+                "Content-Type": "application/json",
+                "x-access-token": token,
+            },
+        })
+            .then(response => {
+                console.log("Data sent successfully:", response.data);
+            })
+            .catch(error => {
+                console.error("Error sending data:", error);
+            });
+    };
 
     useEffect(() => {    
         const decodedToken = jwtDecode(token);
         const userId = decodedToken.id;
-        console.log(decodedToken);
-        console.log("User id : " + userId);
 
             axios
                 .get(`http://localhost:3000/missionsUser/${userId}`, {
@@ -40,10 +67,10 @@ const UserMissions = () => {
             <h1><strong>Vos</strong> missions :</h1>
             <div className="mission-list">
                 {missions.map((mission, index) => (
-                    <Mission key={index} mission={mission} />
+                    <Mission key={index} mission={mission} onFormChange={handleFormChange} />
                 ))}        
             </div>
-            <Button />
+            <Button sendDataToAPI={sendDataToAPI} />
         </div>
     );
 }

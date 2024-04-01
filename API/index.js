@@ -244,21 +244,29 @@ app.get("/missionsUser/:idUser", verifyToken, (req, res) => {
   });
 });
 
-app.put("missionsUser", verifyToken, (req, res) => {
+app.put("/missionsUser", verifyToken, (req, res) => {
   const updatedMissionData = req.body; // Les nouvelles données de la mission à mettre à jour
-  const { idMission, estTerminee, commentaire } = updatedMissionData;
 
+  // Boucle à travers les clés de updatedMissionData et mettez à jour chaque mission individuellement
+  Object.keys(updatedMissionData).forEach(idMission => {
+    const { estTerminee, commentaire } = updatedMissionData[idMission];
 
-  connection.query("UPDATE mission SET estTerminee = ?, commentaire = ? WHERE idMission = ?", [estTerminee, commentaire, idMission],
-    (error) => {
-      if (error) {
-        console.error(error);
-        res.status(500).send({ message: "An error occurred" });
-      } else {
-        res.status(200).send({ message: "Mission updated" });
+    connection.query(
+      "UPDATE mission SET estTerminee = ?, commentaire = ? WHERE idMission = ?",
+      [estTerminee, commentaire, idMission],
+      (error) => {
+        if (error) {
+          console.error(error);
+          res.status(500).send({ message: "An error occurred" });
+          return; // Retournez pour arrêter la boucle et ne pas envoyer de réponse multiple
+        }
       }
-    })
-})
+    );
+  });
+
+  // Après avoir mis à jour toutes les missions, envoyez une réponse réussie
+  res.status(200).send({ message: "Missions updated" });
+});
 
 
 const PORT = process.env.PORT || 3000;

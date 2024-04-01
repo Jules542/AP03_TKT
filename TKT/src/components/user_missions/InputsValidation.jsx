@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
-const InputsValidation = ({ onSave }) => {
+const InputsValidation = ({ onSaveComment, onToggleCocher }) => {
     const [cochee, setCochee] = useState(false);
     const [afficherTextarea, setAfficherTextarea] = useState(false);
-    const [textareaContent, setTextareaContent] = useState(null);
+    const [textareaContent, setTextareaContent] = useState("");
 
     const toggleCocher = () => {
         setCochee(!cochee)
+        onToggleCocher(!cochee);
         console.log(cochee);
     };
 
@@ -15,8 +16,9 @@ const InputsValidation = ({ onSave }) => {
     };
 
     const handleTextChange = (event) => {
-        setTextareaContent(event.target.value)
-        console.log(textareaContent);
+        const value = event.target.value;
+        setTextareaContent(value);
+        onSaveComment(value);
     }
 
     return (

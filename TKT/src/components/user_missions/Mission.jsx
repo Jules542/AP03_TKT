@@ -2,7 +2,7 @@ import React from "react";
 import InputsValidation from "./InputsValidation";
 import { useState } from "react";
 
-const Mission = ({ mission }) => {
+const Mission = ({ mission, onFormChange }) => {
     const [showComment, setShowComment] = useState(false);
     const [comment, setComment] = useState("");
 
@@ -11,10 +11,12 @@ const Mission = ({ mission }) => {
     };
 
     const handleSaveComment = (comment) => {
-        console.log("Comment saved:", comment);
-        setComment(comment);
-        setShowComment(false); // Ferme la zone de commentaire après l'enregistrement
+        onFormChange(mission.idMission, 'commentaire', comment);
     };
+
+    const handleToggleCocher = (isChecked) => {
+        onFormChange(mission.idMission, 'estTerminee', isChecked);
+    }
 
     return (
         <div className="mission-container">
@@ -30,7 +32,7 @@ const Mission = ({ mission }) => {
             <div className="mission-date">
                 <p>{mission.dateMission}</p>
             </div>
-            <InputsValidation />
+            <InputsValidation onSaveComment={handleSaveComment} onToggleCocher={handleToggleCocher} />
         </div>
     );
 };
