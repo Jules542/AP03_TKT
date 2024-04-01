@@ -6,6 +6,7 @@ import AffectationMissions from "./pages/AffectationMissions.jsx";
 import Attractions from "./pages/Attractions.jsx";
 import Login from "./pages/Login.jsx";
 import NouvelleMission from "./pages/NouvelleMission.jsx";
+import GestionUsers from "./pages/GestionUsers.jsx";
 import "./stylesheets/main.scss";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                 path="affectations/nouvelle"
                 element={<NouvelleMission />}
               ></Route>
+              <Route path="/gestion-utilisateurs" element={<GestionUsers />} />
             </Routes>
           </Router>
         </ThemeContextProvider>
