@@ -1,4 +1,4 @@
-import * as jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import React, { createContext, useEffect, useState } from "react";
 
 // Create a context
@@ -47,7 +47,7 @@ export const UserProvider = ({ children }) => {
       console.log(data);
 
       localStorage.setItem("token", data.token);
-      const decodedToken = jwtDecode.jwtDecode(data.token);
+      const decodedToken = jwtDecode(data.token);
       setUser(decodedToken);
     } catch (error) {
       // Handle error during login
