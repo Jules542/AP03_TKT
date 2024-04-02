@@ -4,7 +4,7 @@
 .sort__container {
   position: relative;
   @include themed {
-    background: t("background-dark");
+    background: t("background-light");
   }
   & > select {
     background: transparent;

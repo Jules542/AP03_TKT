@@ -4,7 +4,7 @@
 .searchbar__wrapper {
   position: relative;
   @include themed {
-    background: t("background-dark");
+    background: t("background-light");
   }
   & > .search-icon {
     position: absolute;
