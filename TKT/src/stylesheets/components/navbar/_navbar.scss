@@ -1,0 +1,82 @@
+@import "../../base/variables";
+@import "../../theme/default";
+
+.navbar {
+  display: flex;
+  align-items: center;
+  @include themed {
+    border-bottom: 1px solid t("text");
+  }
+  margin-bottom: 2rem;
+  & > ul {
+    width: 100%;
+    padding-inline: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    list-style: none;
+    & > div {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+    }
+    & > div > img {
+      width: 200px;
+      height: 100px;
+    }
+    & > div > a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      padding: 0.25rem;
+      @include themed {
+        background: t("text-dark");
+      }
+      & > img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    & > div > li > a {
+      font-size: 1.2rem;
+      font-weight: 500;
+      @include themed {
+        color: t("text");
+      }
+      text-decoration: none;
+      cursor: pointer;
+      &:hover {
+        @include themed {
+          color: t("primary");
+        }
+      }
+    }
+  }
+}
+
+.navbar__log {
+  & > a {
+    @include themed {
+      background: t("text-dark");
+      color: t("background-dark") !important;
+    }
+    display: inline-block;
+    line-height: 2.5rem;
+    border: none;
+    width: 8rem;
+    height: 2.5rem;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-sizing: border-box;
+    &:hover {
+      @include themed {
+        color: t("primary") !important;
+      }
+    }
+  }
+}

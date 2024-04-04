@@ -9,7 +9,7 @@ const Sort = ({ sortItem, setSortItem }) => {
       <select id="sort" value={sortItem} onChange={handleSortChange}>
         <option value="">-- Ranger par --</option>
         <option value="scaleUp">Taille (Minimale à Maximale)</option>
-        <option value="scaleDown">Price (Maximale à Minimale)</option>
+        <option value="scaleDown">Taille (Maximale à Minimale)</option>
       </select>
     </div>
   );

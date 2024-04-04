@@ -1,0 +1,30 @@
+@import "../../base//variables";
+@import "../../theme/default";
+
+.sort__container {
+  position: relative;
+  @include themed {
+    background: t("background-light");
+  }
+  & > select {
+    background: transparent;
+    border-radius: 5px;
+    padding-block: 0.5rem;
+    text-align: center;
+    border: none;
+    position: relative;
+    outline: 1px solid $background-border;
+    @include themed {
+      color: t("text");
+    }
+    &:focus {
+      outline: 2px solid $background-border;
+    }
+  }
+  & > select > option {
+    @include themed {
+      color: t("text-dark");
+      background-color: t("background");
+    }
+  }
+}

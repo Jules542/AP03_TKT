@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Attraction from "../components/attractions/Attraction";
 import Searchbar from "../components/attractions/Searchbar";
 import Sidebar from "../components/attractions/Sidebar";
@@ -85,19 +85,30 @@ const Attractions = () => {
 
   return (
     <div className="attractions__wrapper">
-      <p>Accueil &gt; Attractions</p>
-      <h1>Attractions</h1>
-      <div className="attractions__content">
-        <Sidebar
-          filteredAttractions={filteredAttractions}
-          setFilteredAttractions={setFilteredAttractions}
-        />
-        <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <div className="attraction__wrapper">
-          <Sort sortItem={sortItem} setSortItem={setSortItem} />
-          {filteredAttractionsList.map((attraction, index) => (
-            <Attraction key={index} attraction={attraction} />
-          ))}
+      <div>
+        <div className="attractions__header">
+          <p className="attractions__indication">Accueil &gt; Attractions</p>
+          <h1 className="attractions__title">Attractions</h1>
+        </div>
+        <div className="attractions__content">
+          <Sidebar
+            filteredAttractions={filteredAttractions}
+            setFilteredAttractions={setFilteredAttractions}
+          />
+          <div className="attractions__main">
+            <div className="attractions__filtering">
+              <Searchbar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+              />
+              <Sort sortItem={sortItem} setSortItem={setSortItem} />
+            </div>
+            <div className="attractions__container">
+              {filteredAttractionsList.map((attraction, index) => (
+                <Attraction key={index} attraction={attraction} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
