@@ -8,6 +8,8 @@ import Attractions from "./pages/Attractions.jsx";
 import Login from "./pages/Login.jsx";
 import NouvelleMission from "./pages/NouvelleMission.jsx";
 import "./stylesheets/main.scss";
+import Avertissements from "./pages/Avertissements.jsx";
+import NouveauAvertissement from "./pages/NouveauAvertissement.jsx";
 
 function App() {
   const { isDark } = useContext(ThemeContext);
@@ -32,6 +34,11 @@ function App() {
               path="affectations/nouvelle"
               element={<NouvelleMission />}
             ></Route>
+            <Route
+              path="avertissements/nouveau"
+              element={<NouveauAvertissement />}
+            ></Route>
+            <Route path="/avertissements" element={<Avertissements />} />
           </Routes>
         </Router>
       </UserProvider>

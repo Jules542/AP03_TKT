@@ -16,6 +16,9 @@ const Navbar = () => {
         <li>
           <Link to="/affectations">Affectation de missions</Link>
         </li>
+        <li>
+          <Link to="/avertissements">Avertissements</Link>
+        </li>
         {!isLoggedIn() && (
           <li>
             <Link to="/login">Login</Link>
