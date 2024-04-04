@@ -82,11 +82,11 @@ app.post("/register", verifyToken, (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).send({ message: "Unauthorized" });
   }
-  const { login, password } = req.body;
+  const { nom, prenom, login, password, equipeId } = req.body;
   bcrypt.hash(password, saltRound, function (err, hash) {
     connection.query(
-      "INSERT INTO user (login, password) VALUES (?, ?)",
-      [login, hash],
+      "INSERT INTO user (nom, prenom, login, password, isAdmin, idEquipeUser) VALUES (?, ?, ?, ?, ?, ?)",
+      [nom, prenom, login, hash, 0, equipeId],
       (error) => {
         if (error) {
           console.error(error);
@@ -251,6 +251,25 @@ app.delete("/missions/:id", verifyToken, (req, res) => {
       }
     }
   );
+});
+
+//Route GET des équipes
+app.get("/equipes", verifyToken, (req,res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+
+  connection.query(
+    "SELECT idEquipe, nomEquipe FROM equipe",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  )
 });
 
 const PORT = process.env.PORT || 3000;
