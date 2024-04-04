@@ -131,6 +131,29 @@ app.get("/users", verifyToken, (req, res) => {
   );
 });
 
+app.delete("/user/:id", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+
+  const idUser = req.params.id;
+
+  connection.query(
+    "DELETE FROM user WHERE idUser = ?",
+    [
+      idUser,
+    ],
+    (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send({ message: "Mission updated" });
+      }
+    }
+  );
+});
+
 // CRUD for affecting missions
 app.get("/missions", verifyToken, (req, res) => {
   connection.query(

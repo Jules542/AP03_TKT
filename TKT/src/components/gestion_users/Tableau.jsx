@@ -8,6 +8,10 @@ const Tableau = () => {
 
 
     useEffect(() => {    
+        const deleteUser = (idUser) => {
+            setUserList(prevUsers => prevUsers.filter(user => user.id !== idUser))
+        }
+
         const token = localStorage.getItem("token");
 
         axios
@@ -28,6 +32,25 @@ const Tableau = () => {
             );
           });
       }, [showAdmins]);
+
+      // Fonction pour supprimer un utilisateur
+    const handleDeleteUser = (idUser) => {
+        const token = localStorage.getItem("token");
+
+        axios.delete(`http://localhost:3000/user/${idUser}`, {
+        headers: {
+            "Content-Type": "application/json",
+            "x-access-token": `${token}`,
+            },
+          })
+            .then(() => {
+                // Met à jour la liste des utilisateurs après la suppression réussie
+                setUserList(prevUsers => prevUsers.filter(user => user.idUser !== idUser));
+            })
+            .catch(error => {
+                console.error("Une erreur est survenue lors de la suppression de l'utilisateur", error);
+            });
+    };
 
       return (
         <div className="tableau">
@@ -57,7 +80,7 @@ const Tableau = () => {
                                 <td>{user.nomEquipe !== null ? user.nomEquipe : 'Aucune équipe'}</td>
                                 <td>{user.nbMissions}</td>
                                 {/* Afficher les icônes uniquement pour les utilisateurs non-administrateurs */}
-                                <td>{user.isAdmin === 0 && <ActionIcons />}</td>                            
+                                <td>{user.isAdmin === 0 && <ActionIcons idUser={user.idUser} onDelete={handleDeleteUser} />}</td>                            
                             </tr>
                         ))}
                     </tbody>
