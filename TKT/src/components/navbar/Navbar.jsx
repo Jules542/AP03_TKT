@@ -29,6 +29,11 @@ const Navbar = () => {
               <Link to="/affectations">Affectation de missions</Link>
             </li>
           )}
+          {isLoggedIn() && isAdmin() && (
+            <li>
+              <Link to="/gestion-utilisateurs">Gestion des comptes</Link>
+            </li>
+          )}
         </div>
         <div className="navbar__right">
           <a onClick={toggleDark}>

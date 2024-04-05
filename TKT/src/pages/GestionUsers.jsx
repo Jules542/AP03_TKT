@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const GestionUsers = () => {
-
+    
     return (
-        <div>
+        <div className="gestion-users">
             <h1>LISTE DES UTILISATEURS</h1>
             <NewUserButton />
             <Tableau />

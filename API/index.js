@@ -131,6 +131,30 @@ app.get("/users", verifyToken, (req, res) => {
   );
 });
 
+app.put("/user/:id", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+
+  const idUser = req.params.id;
+  const { nom, prenom, idEquipeUser } = req.body;
+
+  connection.query(
+    "UPDATE user SET nom = ?, prenom = ?, idEquipeUser = ? WHERE idUser = ?",
+    [
+      nom, prenom, idEquipeUser, idUser
+    ],
+    (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send({ message: "User updated" });
+      }
+    }
+  );
+});
+
 app.delete("/user/:id", verifyToken, (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).send({ message: "Unauthorized" });
@@ -148,7 +172,7 @@ app.delete("/user/:id", verifyToken, (req, res) => {
         console.error(error);
         res.status(500).send({ message: "An error occurred" });
       } else {
-        res.status(200).send({ message: "Mission updated" });
+        res.status(200).send({ message: "User deleted" });
       }
     }
   );
