@@ -9,6 +9,8 @@ import NouvelleMission from "./pages/NouvelleMission.jsx";
 import "./stylesheets/main.scss";
 import Avertissements from "./pages/Avertissements.jsx";
 import NouveauAvertissement from "./pages/NouveauAvertissement.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -16,6 +18,7 @@ function App() {
       <UserProvider>
         <ThemeContextProvider>
           <Router>
+          <ToastContainer />
             <Navbar />
             <Routes>
               <Route path="/" element={<h1>Welcome to the homepage</h1>} />

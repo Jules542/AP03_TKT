@@ -1,9 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify';
 import { redirect, useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+import { Slide } from 'react-toastify';
+
 
 const NouveauAvertissement = () => {
     
+    const notify = () => toast.success("Avertissement ajouté avec succès !", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Slide,
+    });
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
@@ -40,7 +55,7 @@ const NouveauAvertissement = () => {
                 console.error(error);
             });
             console.log(formData)
-        navigate("/avertissements")
+            navigate("/avertissements")
     }
 
     useEffect(() => {
@@ -112,7 +127,7 @@ const NouveauAvertissement = () => {
             </option>
           ))}
       </select>
-      <button type="submit">Submit</button>
+      <button onClick={notify} type="submit">Submit</button>
     </form>
   );
 };
