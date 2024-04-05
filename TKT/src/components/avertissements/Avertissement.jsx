@@ -62,27 +62,10 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
   };
 
   return (
-    <div className="avertissement-wrapper">
-      <div class="avertissement-wrapper-title">Libelle de l'avertissement</div>
-      <div class="avertissement-wrapper-value">{avertissement.libAvertissement}</div>
-      <div class="avertissement-wrapper-title">Commentaire de l'avertissement</div>
-      <div class="avertissement-wrapper-value">{avertissement.commentaireAvertissement}</div>
-      <div class="avertissement-wrapper-title">Utilisateur</div>
-      <div class="avertissement-wrapper-value">
-                  {user
-                    ? `${user.nom} ${user.prenom}`
-                    : "Utilisateur non trouvé"}
-                  </div>
-      <div class="avertissement-wrapper-title">Niveau</div>
-      <div class="avertissement-wrapper-value">
-                  {niveau
-                    ? `${niveau.libNiveau}`
-                    : "Niveau non trouvée"}
-                  </div>
-      <div class="avertissement-wrapper-title">Actions</div>
-
+      <div className="avertissement-wrapper-card">
             {editing ? (
               <>
+              <div className="avertissement-wrapper-title">Libelle de l'avertissement</div>
               <input
                   type="text"
                   value={editedAvertissement.libAvertissement}
@@ -93,6 +76,7 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
                     })
                   }
                 />
+                <div className="avertissement-wrapper-title">Commentaire de l'avertissement</div>
                <input
                     type="text"
                     value={editedAvertissement.commentaireAvertissement}
@@ -103,6 +87,7 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
                       })
                     }
                   />
+                  <div className="avertissement-wrapper-title">Utilisateur</div>
                   <select
                     value={editedAvertissement.idUserAvertissement}
                     onChange={(e) =>
@@ -118,6 +103,7 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
                       </option>
                     ))}
                   </select>
+                  <div className="avertissement-wrapper-title">Niveau</div>
                 <select
                     value={editedAvertissement.idNiveauAvertissement}
                     onChange={(e) =>
@@ -133,22 +119,45 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
                       </option>
                     ))}
                   </select>
+                  <div className="avertissement-wrapper-title">Actions</div>
                   <button onClick={handleSubmit}>Save</button>
                   <button onClick={() => setEditing(false)}>Cancel</button>
               </>
             ) : (
               <>
-                  <div class="avertissement-wrapper-value">
-                <button onClick={() => setEditing(true)}>Edit</button></div>
-                {useContext(ThemeContext).isDark == true?(
-                  <div><img src={deleteImgWhite} onClick={handleDelete}></img></div>
-                ) : (
-                  <div><img src={deleteImgDark} onClick={handleDelete}></img></div>
-                )}
-            </>
-            )}
-    </div>
-  )
+              <div className="avertissement-wrapper-title">Libelle de l'avertissement</div>
+              <div className="avertissement-wrapper-value">{avertissement.libAvertissement}</div>
+              <br/>
+              <div className="avertissement-wrapper-title">Commentaire de l'avertissement</div>
+              <div className="avertissement-wrapper-value">{avertissement.commentaireAvertissement}</div>
+              <br/>
+              <div className="avertissement-wrapper-title">Utilisateur</div>
+              <div className="avertissement-wrapper-value">
+                          {user
+                            ? `${user.nom} ${user.prenom}`
+                            : "Utilisateur non trouvé"}
+                          </div>
+              <br/>
+              <div className="avertissement-wrapper-title">Niveau</div>
+              <div className="avertissement-wrapper-value">
+                          {niveau
+                            ? `${niveau.libNiveau}`
+                            : "Niveau non trouvée"}
+                          </div>
+              <br/>
+              <div className="avertissement-wrapper-title">Actions</div>
+              <div className="avertissement-wrapper-value">
+              <button onClick={() => setEditing(true)}>Edit</button></div>
+              {useContext(ThemeContext).isDark == true?(
+                <div><img src={deleteImgWhite} onClick={handleDelete}></img></div>
+              ) : (
+                <div><img src={deleteImgDark} onClick={handleDelete}></img></div>
+              )}
+              <br/>
+          </>
+          )}
+          </div>
+    )
 }
 
-export default Avertissement
+export default Avertissement;

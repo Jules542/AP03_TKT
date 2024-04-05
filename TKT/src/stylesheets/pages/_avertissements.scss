@@ -1,8 +1,22 @@
 .avertissement-wrapper img{
     width: 5%;
-    background-color: blue;
+    cursor: pointer;
 }
 
-.avertissement-wrapper{
+
+.avertissement-wrapper {
     display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.avertissement-wrapper-card{
+    border-radius: 10px;
+    background-color: grey;
+    padding: 1rem;
+}
+
+.avertissements > a{
+    margin-bottom: 5%;
 }
