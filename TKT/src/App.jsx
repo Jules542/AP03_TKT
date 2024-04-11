@@ -7,6 +7,10 @@ import Attractions from "./pages/Attractions.jsx";
 import Login from "./pages/Login.jsx";
 import NouvelleMission from "./pages/NouvelleMission.jsx";
 import "./stylesheets/main.scss";
+import Avertissements from "./pages/Avertissements.jsx";
+import NouveauAvertissement from "./pages/NouveauAvertissement.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -14,6 +18,7 @@ function App() {
       <UserProvider>
         <ThemeContextProvider>
           <Router>
+          <ToastContainer />
             <Navbar />
             <Routes>
               <Route path="/" element={<h1>Welcome to the homepage</h1>} />
@@ -27,8 +32,13 @@ function App() {
                 path="affectations/nouvelle"
                 element={<NouvelleMission />}
               ></Route>
-            </Routes>
-          </Router>
+            <Route
+              path="avertissements/nouveau"
+              element={<NouveauAvertissement />}
+            ></Route>
+            <Route path="/avertissements" element={<Avertissements />} />
+          </Routes>
+        </Router>
         </ThemeContextProvider>
       </UserProvider>
     </>
