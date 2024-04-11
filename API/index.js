@@ -234,3 +234,110 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
+
+// REQUETES AVERTISSEMENTS
+app.get("/avertissements", verifyToken, (req, res) => {
+  connection.query(
+    "SELECT idAvertissement, libAvertissement, commentaireAvertissement, idUserAvertissement, idNiveauAvertissement FROM avertissement",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+app.post("/avertissement/add", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+  const {
+    libAvertissement,
+    commentaireAvertissement,
+    idUserAvertissement,
+    idNiveauAvertissement,
+  } = req.body;
+  connection.query(
+    "INSERT INTO avertissement (libAvertissement, commentaireAvertissement, idUserAvertissement, idNiveauAvertissement) VALUES (?, ?, ?, ?)",
+    [
+      libAvertissement,
+      commentaireAvertissement,
+      idUserAvertissement,
+      idNiveauAvertissement,
+    ],
+    (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(201).send({ message: "Avertissement créé" });
+      }
+    }
+  );
+});
+
+app.delete("/avertissement/delete/:id", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+  const idAvertissement = req.params.id;
+  connection.query(
+    "DELETE FROM avertissement WHERE idAvertissement = ?",
+    [idAvertissement],
+    (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send({ message: "Avertissement supprimé" });
+      }
+    }
+  );
+});
+
+app.put("/avertissement/update/:id", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+  const idAvertissement = req.params.id;
+  const {
+    libAvertissement,
+    commentaireAvertissement,
+    idUserAvertissement,
+    idNiveauAvertissement,
+  } = req.body;
+  connection.query(
+    "UPDATE avertissement SET libAvertissement = ?, commentaireAvertissement = ?, idUserAvertissement = ?, idNiveauAvertissement = ? WHERE idAvertissement = ?",
+    [
+      libAvertissement,
+      commentaireAvertissement,
+      idUserAvertissement,
+      idNiveauAvertissement,
+      idAvertissement,
+    ],
+    (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send({ message: "Avertissement modifié" });
+      }
+    }
+  );
+});
+
+app.get("/niveaux", verifyToken, (req, res) => {
+  connection.query("SELECT idNiveau, libNiveau   FROM niveau", (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send({ message: "An error occurred" });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
