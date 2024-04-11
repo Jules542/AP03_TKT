@@ -17,25 +17,28 @@
 }
 
 .checkbox-container input {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     color: #D9D9D9;
 }
 
 .tableau-listeusers {
     width: 95%;
     margin: 0 auto;
+    margin-bottom: 20px;
 }
 
 .tableau-listeusers table {
     border-collapse:collapse;
+    @include themed {
+        background-color: t("background-light");
+        border: 1px solid t("text-light");
+    }
 }
 
 .tableau-listeusers td, .tableau-listeusers th {
     max-width: 300px;
-    @include themed {
-        background-color: t("background-table");
-    }
+    
 }
 
 .tableau-listeusers table td:last-child {
@@ -67,7 +70,6 @@
 
 
 
-
 .validation-icons {
     display: flex;
     align-items: center;
@@ -92,7 +94,6 @@
 .tableau-container select {
     text-align: center;
     background-color: #FFFFFF;
-    border: 1px solid black;
     width: 80%;
 }
 

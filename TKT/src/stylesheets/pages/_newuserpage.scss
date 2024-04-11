@@ -1,15 +1,18 @@
 .newuserform-container {
-    padding: 20px 10px;
+    padding: 15px 7px;
     width: 65%;
-    margin: 0 auto;
+    margin: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     border-radius: 60px;
     @include themed {
-        background-color: t("background-table");
+        background-color: t("background-light");
     }
+    @include themed {
+        border: 1px solid t("text");
+    }    
 }
 
 
@@ -42,7 +45,9 @@
     margin-bottom: 20px;
     margin-left: 15px;
     padding: 8px 8px;
-    border: 1px solid #000000;
+    @include themed {
+            border: 2px solid t("primary");
+    }
     font-family: "Poppins";
 }
 
