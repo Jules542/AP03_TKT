@@ -6,6 +6,8 @@ import Sidebar from "../components/attractions/Sidebar";
 import Sort from "../components/attractions/Sort";
 
 const Attractions = () => {
+  const [switchOffSidebar, setSwitchOffSidebar] = useState(false);
+  const [swapSidebarClass, setSwapSidebarClass] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [attractions, setAttractions] = useState([]);
   const [sortItem, setSortItem] = useState("");
@@ -14,21 +16,34 @@ const Attractions = () => {
     includeAccompaniedSize: false,
     maximalSize: 190,
   });
-
   useEffect(() => {
-    console.log(filteredAttractions);
-    axios
-      .get("http://localhost:3000/attractions")
-      .then((response) => {
-        setAttractions(response.data);
-      })
-      .catch((error) => {
-        console.error(
-          "Une erreur est survenue lors de la récupération des données",
-          error
-        );
-      });
+    const handleResize = () => {
+      window.innerWidth < 768
+        ? setSwitchOffSidebar(true)
+        : setSwitchOffSidebar(false);
+      window.innerWidth < 768 && setSwapSidebarClass(false);
+      setSwapSidebarClass(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      axios
+        .get("http://localhost:3000/attractions")
+        .then((response) => {
+          setAttractions(response.data);
+        })
+        .catch((error) => {
+          console.error(
+            "Une erreur est survenue lors de la récupération des données",
+            error
+          );
+        });
+    };
   }, [filteredAttractions]);
+
+  // Switch class to move sidebar
+  const handleFilterClick = () => {
+    setSwapSidebarClass((prev) => !prev);
+  };
 
   const filteredAttractionsList = useMemo(() => {
     let filteredList = attractions;
@@ -88,20 +103,31 @@ const Attractions = () => {
       <div>
         <div className="attractions__header">
           <p className="attractions__indication">Accueil &gt; Attractions</p>
-          <h1 className="attractions__title">Attractions</h1>
+          <h1 className="attractions__title">ATTRACTIONS</h1>
         </div>
         <div className="attractions__content">
           <Sidebar
+            swapSidebarClass={swapSidebarClass}
+            handleFilterClick={handleFilterClick}
+            switchOffSidebar={switchOffSidebar}
             filteredAttractions={filteredAttractions}
             setFilteredAttractions={setFilteredAttractions}
+            sortItem={sortItem}
+            setSortItem={setSortItem}
           />
           <div className="attractions__main">
             <div className="attractions__filtering">
               <Searchbar
                 searchTerm={searchTerm}
+                setFilteredAttractions={setFilteredAttractions}
                 setSearchTerm={setSearchTerm}
               />
-              <Sort sortItem={sortItem} setSortItem={setSortItem} />
+              <Sort
+                sortItem={sortItem}
+                setSortItem={setSortItem}
+                handleFilterClick={handleFilterClick}
+                switchOffSidebar={switchOffSidebar}
+              />
             </div>
             <div className="attractions__container">
               {filteredAttractionsList.map((attraction, index) => (

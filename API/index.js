@@ -103,7 +103,7 @@ app.post("/register", verifyToken, (req, res) => {
 
 app.get("/attractions", (req, res) => {
   connection.query(
-    "SELECT idAttraction, imageAttraction, nomAttraction, descAttraction, tailleMinRequise, tailleMinRequise, tailleMinRequiseAccomp, touteLaFamille, senstationForte, theme.libelle FROM attraction INNER JOIN theme ON idTheme = idThemeAttraction",
+    "SELECT idAttraction, imageAttraction, nomAttraction, descAttraction, tailleMinRequise, tailleMinRequise, tailleMinRequiseAccomp, touteLaFamille, sensationForte, theme.libelle FROM attraction INNER JOIN theme ON idTheme = idThemeAttraction",
     (error, results) => {
       if (error) {
         console.error(error);
