@@ -10,8 +10,10 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await handleLogin(username, password);
-    navigate("/");
+    const loginSuccessful = await handleLogin(username, password);
+    if (loginSuccessful) {
+      navigate("/");
+    }
   };
 
   useEffect(() => {
@@ -21,24 +23,27 @@ const Login = () => {
   }, [isLoggedIn(), navigate]);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
+    <form className="login" onSubmit={handleSubmit}>
+      <div className="login__header">
+        <h2>DÉJÀ UN COMPTE PARC ASTÉRIX ?</h2>
+        <p>Connectez-vous !</p>
+      </div>
+      <div className="login__content">
         <input
+          placeholder="Nom d'utilisateur"
           type="text"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-      </label>
-      <label>
-        Password:
         <input
+          placeholder="Mot de passe"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-      </label>
-      <input type="submit" value="Submit" />
+        <a href="">Forgot your password ?</a>
+        <input type="submit" value="Submit" />
+      </div>
     </form>
   );
 };

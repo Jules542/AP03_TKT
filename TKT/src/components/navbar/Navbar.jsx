@@ -17,7 +17,7 @@ const Navbar = () => {
     <nav className="navbar">
       <ul>
         <div className="navbar__left">
-          <img src={Logo} alt="logo" />
+          <img src={Logo} alt="logo" draggable="false" />
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -29,15 +29,19 @@ const Navbar = () => {
           <li>
             <Link to="/attractions">Attractions</Link>
           </li>
-          {isLoggedIn() && isAdmin() && (
+          {isLoggedIn() && isAdmin() ? (
             <li>
               <Link to="/affectations">Affectation de missions</Link>
             </li>
-          )}
+          ) : null}
         </div>
         <div className="navbar__right">
           <a onClick={toggleDark}>
-            {isDark ? <img src={Sun} /> : <img src={Moon} />}
+            {isDark ? (
+              <img src={Sun} draggable="false" />
+            ) : (
+              <img src={Moon} draggable="false" />
+            )}
           </a>
           {!isLoggedIn() && (
             <li className="navbar__log">
