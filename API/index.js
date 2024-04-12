@@ -82,11 +82,11 @@ app.post("/register", verifyToken, (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).send({ message: "Unauthorized" });
   }
-  const { login, password } = req.body;
+  const { nom, prenom, login, password, equipeId } = req.body;
   bcrypt.hash(password, saltRound, function (err, hash) {
     connection.query(
-      "INSERT INTO user (login, password) VALUES (?, ?)",
-      [login, hash],
+      "INSERT INTO user (nom, prenom, login, password, isAdmin, idEquipeUser) VALUES (?, ?, ?, ?, ?, ?)",
+      [nom, prenom, login, hash, 0, equipeId],
       (error) => {
         if (error) {
           console.error(error);
@@ -120,13 +120,60 @@ app.get("/users", verifyToken, (req, res) => {
     return res.status(403).send({ message: "Unauthorized" });
   }
   connection.query(
-    "SELECT idUser, login, nom, prenom, isAdmin FROM user",
+    "SELECT idUser, login, nom, prenom, isAdmin, nomEquipe, COALESCE(COUNT(idUserMission), 0) AS nbMissions FROM user LEFT JOIN equipe ON idEquipe = idEquipeUser LEFT JOIN mission ON idUser = idUserMission GROUP BY idUser, login, nom, prenom, isAdmin, nomEquipe;",
     (error, results) => {
       if (error) {
         console.error(error);
         res.status(500).send({ message: "An error occurred" });
       }
       res.status(200).send(results);
+    }
+  );
+});
+
+app.put("/user/:id", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+
+  const idUser = req.params.id;
+  const { nom, prenom, idEquipeUser } = req.body;
+
+  connection.query(
+    "UPDATE user SET nom = ?, prenom = ?, idEquipeUser = ? WHERE idUser = ?",
+    [
+      nom, prenom, idEquipeUser, idUser
+    ],
+    (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send({ message: "User updated" });
+      }
+    }
+  );
+});
+
+app.delete("/user/:id", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+
+  const idUser = req.params.id;
+
+  connection.query(
+    "DELETE FROM user WHERE idUser = ?",
+    [
+      idUser,
+    ],
+    (error) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send({ message: "User deleted" });
+      }
     }
   );
 });
@@ -228,6 +275,25 @@ app.delete("/missions/:id", verifyToken, (req, res) => {
       }
     }
   );
+});
+
+//Route GET des équipes
+app.get("/equipes", verifyToken, (req,res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+
+  connection.query(
+    "SELECT idEquipe, nomEquipe FROM equipe",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  )
 });
 
 const PORT = process.env.PORT || 3000;

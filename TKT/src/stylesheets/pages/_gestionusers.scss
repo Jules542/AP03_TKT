@@ -1,0 +1,122 @@
+.action-icons-container {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icons-container img {
+    width: 23px; 
+    height: auto;
+    cursor: pointer;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.checkbox-container input {
+    width: 22px;
+    height: 22px;
+    color: #D9D9D9;
+}
+
+.tableau-listeusers {
+    width: 95%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.tableau-listeusers table {
+    border-collapse:collapse;
+    @include themed {
+        background-color: t("background-light");
+        border: 1px solid t("text-light");
+    }
+}
+
+.tableau-listeusers td, .tableau-listeusers th {
+    max-width: 300px;
+    
+}
+
+.tableau-listeusers table td:last-child {
+    background-color: transparent;
+}
+
+.tableau-listeusers table th {
+    font-size: 20px;
+    width: 270px;
+    height: 50px;
+}
+
+.tableau-listeusers table .nb-mission-column {
+    width: 400px;
+}
+
+.tableau-listeusers table td {
+    font-size: 18px;
+    text-align: center;
+    height: 60px;
+}
+
+.tableau-listeusers table .icon-column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+}
+
+
+
+.validation-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.validation-icons img {
+    cursor: pointer;
+    width: 23px;
+}
+
+.tableau-container input, .tableau-container select {
+    font-family: "Poppins";    
+    height: 35px;
+}
+
+.tableau-container input:focus {
+    border: 1px solid #5ACA58;
+}
+
+.tableau-container select {
+    text-align: center;
+    background-color: #FFFFFF;
+    width: 80%;
+}
+
+.tableau-container option {
+    font-family: "Poppins";
+}
+
+.newuserbutton-container button {
+    background: linear-gradient(#03A800, #047202);
+    padding: 15px 20px;
+    font-family: "Poppins";
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+}
+
+.newuserbutton-container {
+    margin-bottom: 10px;
+}
+
+.gestion-users{
+    width: 98%;
+    margin: 0 auto;
+}
