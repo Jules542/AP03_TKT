@@ -19,7 +19,6 @@ export const UserProvider = ({ children }) => {
           localStorage.removeItem("token");
         } else {
           setUser(decodedToken);
-          console.log(user);
         }
       } catch (error) {
         localStorage.removeItem("token");
@@ -44,7 +43,6 @@ export const UserProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log(data);
 
       localStorage.setItem("token", data.token);
       const decodedToken = jwtDecode(data.token);
