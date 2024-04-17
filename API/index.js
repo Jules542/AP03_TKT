@@ -82,11 +82,11 @@ app.post("/register", verifyToken, (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).send({ message: "Unauthorized" });
   }
-  const { login, password } = req.body;
+  const { nom, prenom, login, password, equipeId } = req.body;
   bcrypt.hash(password, saltRound, function (err, hash) {
     connection.query(
-      "INSERT INTO user (login, password) VALUES (?, ?)",
-      [login, hash],
+      "INSERT INTO user (nom, prenom, login, password, isAdmin, idEquipeUser) VALUES (?, ?, ?, ?, ?, ?)",
+      [nom, prenom, login, hash, 0, equipeId],
       (error) => {
         if (error) {
           console.error(error);
@@ -120,7 +120,7 @@ app.get("/users", verifyToken, (req, res) => {
     return res.status(403).send({ message: "Unauthorized" });
   }
   connection.query(
-    "SELECT idUser, login, nom, prenom, isAdmin, idEmploiUser FROM user",
+    "SELECT idUser, login, nom, prenom, isAdmin, nomEquipe, idEmploiUser, COALESCE(COUNT(idUserMission), 0) AS nbMissions FROM user LEFT JOIN equipe ON idEquipe = idEquipeUser LEFT JOIN mission ON idUser = idUserMission GROUP BY idUser, login, nom, prenom, isAdmin, nomEquipe, idEmploiser;",
     (error, results) => {
       if (error) {
         console.error(error);
@@ -131,47 +131,43 @@ app.get("/users", verifyToken, (req, res) => {
   );
 });
 
-app.get("/restaurants", verifyToken, (_, res) => {
+app.put("/user/:id", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+
+  const idUser = req.params.id;
+  const { nom, prenom, idEquipeUser } = req.body;
+
   connection.query(
-    "SELECT id,  nomRestaurant, descRestaurant FROM restaurant",
-    (error, results) => {
-      if (error) {
-        console.error(error);
-        res
-          .status(500)
-          .send({ message: "An error occurred", error: error.message });
-      } else {
-        res.status(200).send(results);
-      }
-    }
-  );
-});
-app.get("/equipes", verifyToken, (_, res) => {
-  connection.query(
-    "SELECT idEquipe, nomEquipe FROM equipe",
-    (error, results) => {
+    "UPDATE user SET nom = ?, prenom = ?, idEquipeUser = ? WHERE idUser = ?",
+    [nom, prenom, idEquipeUser, idUser],
+    (error) => {
       if (error) {
         console.error(error);
         res.status(500).send({ message: "An error occurred" });
       } else {
-        res.status(200).send(results);
+        res.status(200).send({ message: "User updated" });
       }
     }
   );
 });
 
-app.get("/emplois", verifyToken, (_, res) => {
-  connection.query(
-    "SELECT id, nomEmploi, idEquipe FROM emploi",
-    (error, results) => {
-      if (error) {
-        console.error(error);
-        res.status(500).send({ message: "An error occurred" });
-      } else {
-        res.status(200).send(results);
-      }
+app.delete("/user/:id", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+
+  const idUser = req.params.id;
+
+  connection.query("DELETE FROM user WHERE idUser = ?", [idUser], (error) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send({ message: "An error occurred" });
+    } else {
+      res.status(200).send({ message: "User deleted" });
     }
-  );
+  });
 });
 
 // CRUD for affecting missions
@@ -197,10 +193,9 @@ app.post("/missions", verifyToken, (req, res) => {
     estTerminee,
     idUserMission,
     idAttractionMission,
-    idRestaurantMission,
   } = req.body;
   connection.query(
-    "INSERT INTO mission (dateMission, libMission, commentaire, estTerminee, idUserMission, idAttractionMission, idRestaurantMission) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO mission (dateMission, libMission, commentaire, estTerminee, idUserMission, idAttractionMission) VALUES (?, ?, ?, ?, ?, ?)",
     [
       dateMission,
       libMission,
@@ -208,7 +203,6 @@ app.post("/missions", verifyToken, (req, res) => {
       estTerminee,
       idUserMission,
       idAttractionMission,
-      idRestaurantMission,
     ],
     (error) => {
       if (error) {
@@ -231,20 +225,18 @@ app.put("/missions/:id", verifyToken, (req, res) => {
     libMission,
     commentaire,
     estTerminee,
-    idAttractionMission,
     idUserMission,
-    idRestaurantMission,
+    idAttractionMission,
   } = req.body;
   connection.query(
-    "UPDATE mission SET dateMission = ?, libMission = ?, commentaire = ?, estTerminee = ?, idAttractionMission = ?, idUserMission = ?,  idRestaurantMission = ? WHERE idMission = ?",
+    "UPDATE mission SET dateMission = ?, libMission = ?, commentaire = ?, estTerminee = ?, idUserMission = ?, idAttractionMission = ? WHERE idMission = ?",
     [
       dateMission,
       libMission,
       commentaire,
       estTerminee,
-      idAttractionMission,
       idUserMission,
-      idRestaurantMission,
+      idAttractionMission,
       idMission,
     ],
     (error) => {
@@ -277,12 +269,31 @@ app.delete("/missions/:id", verifyToken, (req, res) => {
   );
 });
 
+//Route GET des équipes
+app.get("/equipes", verifyToken, (req, res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+
+  connection.query(
+    "SELECT idEquipe, nomEquipe FROM equipe",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-// CRUD for REQUETES AVERTISSEMENTS
+// REQUETES AVERTISSEMENTS
 app.get("/avertissements", verifyToken, (req, res) => {
   connection.query(
     "SELECT idAvertissement, libAvertissement, commentaireAvertissement, idUserAvertissement, idNiveauAvertissement FROM avertissement",
