@@ -1,9 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
+import Banner from "../components/home_page/Banner";
+import Presentation from "../components/home_page/Presentation";
+
+
 
 const HomePage = () => {
     return (
         <div className="home-page">
-            <h1>PAGE D'ACCUEIL</h1>
+            <Banner />
+            <Presentation />
         </div>
     )
 }
