@@ -120,13 +120,56 @@ app.get("/users", verifyToken, (req, res) => {
     return res.status(403).send({ message: "Unauthorized" });
   }
   connection.query(
-    "SELECT idUser, login, nom, prenom, isAdmin FROM user",
+    "SELECT idUser, login, nom, prenom, isAdmin, idEmploiUser FROM user",
     (error, results) => {
       if (error) {
         console.error(error);
         res.status(500).send({ message: "An error occurred" });
       }
       res.status(200).send(results);
+    }
+  );
+});
+
+app.get("/restaurants", verifyToken, (_, res) => {
+  connection.query(
+    "SELECT id,  nomRestaurant, descRestaurant FROM restaurant",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res
+          .status(500)
+          .send({ message: "An error occurred", error: error.message });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+app.get("/equipes", verifyToken, (_, res) => {
+  connection.query(
+    "SELECT idEquipe, nomEquipe FROM equipe",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+app.get("/emplois", verifyToken, (_, res) => {
+  connection.query(
+    "SELECT id, nomEmploi, idEquipe FROM emploi",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
     }
   );
 });
@@ -154,9 +197,10 @@ app.post("/missions", verifyToken, (req, res) => {
     estTerminee,
     idUserMission,
     idAttractionMission,
+    idRestaurantMission,
   } = req.body;
   connection.query(
-    "INSERT INTO mission (dateMission, libMission, commentaire, estTerminee, idUserMission, idAttractionMission) VALUES (?, ?, ?, ?, ?, ?)",
+    "INSERT INTO mission (dateMission, libMission, commentaire, estTerminee, idUserMission, idAttractionMission, idRestaurantMission) VALUES (?, ?, ?, ?, ?, ?, ?)",
     [
       dateMission,
       libMission,
@@ -164,6 +208,7 @@ app.post("/missions", verifyToken, (req, res) => {
       estTerminee,
       idUserMission,
       idAttractionMission,
+      idRestaurantMission,
     ],
     (error) => {
       if (error) {
@@ -186,18 +231,20 @@ app.put("/missions/:id", verifyToken, (req, res) => {
     libMission,
     commentaire,
     estTerminee,
-    idUserMission,
     idAttractionMission,
+    idUserMission,
+    idRestaurantMission,
   } = req.body;
   connection.query(
-    "UPDATE mission SET dateMission = ?, libMission = ?, commentaire = ?, estTerminee = ?, idUserMission = ?, idAttractionMission = ? WHERE idMission = ?",
+    "UPDATE mission SET dateMission = ?, libMission = ?, commentaire = ?, estTerminee = ?, idAttractionMission = ?, idUserMission = ?,  idRestaurantMission = ? WHERE idMission = ?",
     [
       dateMission,
       libMission,
       commentaire,
       estTerminee,
-      idUserMission,
       idAttractionMission,
+      idUserMission,
+      idRestaurantMission,
       idMission,
     ],
     (error) => {
@@ -235,9 +282,7 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-
-
-// REQUETES AVERTISSEMENTS
+// CRUD for REQUETES AVERTISSEMENTS
 app.get("/avertissements", verifyToken, (req, res) => {
   connection.query(
     "SELECT idAvertissement, libAvertissement, commentaireAvertissement, idUserAvertissement, idNiveauAvertissement FROM avertissement",
@@ -332,12 +377,15 @@ app.put("/avertissement/update/:id", verifyToken, (req, res) => {
 });
 
 app.get("/niveaux", verifyToken, (req, res) => {
-  connection.query("SELECT idNiveau, libNiveau   FROM niveau", (error, results) => {
-    if (error) {
-      console.error(error);
-      res.status(500).send({ message: "An error occurred" });
-    } else {
-      res.status(200).send(results);
+  connection.query(
+    "SELECT idNiveau, libNiveau   FROM niveau",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
     }
-  });
+  );
 });
