@@ -120,7 +120,7 @@ app.get("/users", verifyToken, (req, res) => {
     return res.status(403).send({ message: "Unauthorized" });
   }
   connection.query(
-    "SELECT idUser, login, nom, prenom, isAdmin, nomEquipe, idEmploiUser, COALESCE(COUNT(idUserMission), 0) AS nbMissions FROM user LEFT JOIN equipe ON idEquipe = idEquipeUser LEFT JOIN mission ON idUser = idUserMission GROUP BY idUser, login, nom, prenom, isAdmin, nomEquipe, idEmploiser;",
+    "SELECT idUser, login, nom, prenom, isAdmin, nomEquipe, idEmploiUser, COALESCE(COUNT(idUserMission), 0) AS nbMissions FROM user LEFT JOIN emploi ON Emploi.id = idEmploiUser LEFT JOIN equipe ON Emploi.idEquipe = Equipe.idEquipe LEFT JOIN mission ON idUser = idUserMission GROUP BY idUser, login, nom, prenom, isAdmin, nomEquipe, idEmploiUser;",
     (error, results) => {
       if (error) {
         console.error(error);
@@ -277,6 +277,36 @@ app.get("/equipes", verifyToken, (req, res) => {
 
   connection.query(
     "SELECT idEquipe, nomEquipe FROM equipe",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+app.get("/restaurants", verifyToken, (_, res) => {
+  connection.query(
+    "SELECT id,  nomRestaurant, descRestaurant FROM restaurant",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res
+          .status(500)
+          .send({ message: "An error occurred", error: error.message });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+app.get("/emplois", verifyToken, (_, res) => {
+  connection.query(
+    "SELECT id, nomEmploi, idEquipe FROM emploi",
     (error, results) => {
       if (error) {
         console.error(error);
