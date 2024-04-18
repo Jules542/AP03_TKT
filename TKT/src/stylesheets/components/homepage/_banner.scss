@@ -31,3 +31,21 @@
     margin-bottom: 40px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
 }
+
+@media screen and (max-width: 1250px) {
+    .home-banner-container {
+        height: 60vh;
+    }
+    .home-banner-container h1 {
+        font-size: 50px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .home-banner-container h1 {
+        font-size: 40px;
+    }
+    .home-banner-container {
+        height: 40vh;
+    }
+}
