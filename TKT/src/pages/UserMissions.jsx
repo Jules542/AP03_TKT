@@ -4,13 +4,11 @@ import Mission from "../components/user_missions/Mission";
 import Button from "../components/user_missions/Button";
 import { UserContext } from "../context/UserContext";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
 
 const UserMissions = () => {
     const [missions, setMissions] = useState([]);
     const { token } = useContext(UserContext);
     const [formData, setFormData] = useState({}); // Utilisez un objet pour stocker les données de toutes les missions
-    const navigate = useNavigate();
 
     const handleFormChange = (missionId, key, value) => {
         // Mettre à jour l'état avec les données de chaque mission
