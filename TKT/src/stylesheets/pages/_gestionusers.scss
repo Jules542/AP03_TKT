@@ -31,24 +31,25 @@
 .tableau-listeusers table {
     border-collapse:collapse;
     @include themed {
-        background-color: t("background-light");
         border: 1px solid t("text-light");
     }
 }
 
 .tableau-listeusers td, .tableau-listeusers th {
-    max-width: 300px;
-    
-}
-
-.tableau-listeusers table td:last-child {
-    background-color: transparent;
+    max-width: 15vw;    
 }
 
 .tableau-listeusers table th {
     font-size: 20px;
-    width: 270px;
+    width: 15vw;
     height: 50px;
+    @include themed {
+        background-color: t("background-dark");
+    }
+}
+
+.tableau-listeusers table th:last-child {
+    width: 50px;
 }
 
 .tableau-listeusers table .nb-mission-column {
@@ -59,6 +60,19 @@
     font-size: 18px;
     text-align: center;
     height: 60px;
+    max-width: 80px;
+}
+
+.tableau-listeusers table tr {
+    @include themed {
+        background-color: t("background-light");
+    }
+}
+
+.tableau-listeusers table tbody tr:nth-child(even) {
+    @include themed {
+        background-color: t("background-dark");
+    }
 }
 
 .tableau-listeusers table .icon-column {
@@ -119,4 +133,17 @@
 .gestion-users{
     width: 98%;
     margin: 0 auto;
+}
+
+@media screen and (max-width: 970px) {
+    .tableau-listeusers table td {
+        font-size: 12px;
+    }
+    .tableau-listeusers table th {
+        font-size: 15px;
+        height: 40px;
+    }
+    .tableau-listeusers table .nb-mission-column {
+        width: 200px;
+    }
 }

@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 const NewUserPage = () => {
     const [nom, setNom] = useState("");
     const [prenom, setPrenom] = useState("");
-    const [equipes, setEquipes] = useState([]);
-    const [equipeId, setEquipeId] = useState(0);
+    const [emplois, setEmplois] = useState([]);
+    const [emploiId, setEmploiId] = useState(0);
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,17 +17,17 @@ const NewUserPage = () => {
     useEffect(() => {
         const token = localStorage.getItem("token");
         // Charger la liste des équipes disponibles depuis votre API lors du montage du composant
-        axios.get("http://localhost:3000/equipes", {
+        axios.get("http://localhost:3000/emplois", {
             headers: {
                 "Content-Type": "application/json",
                 "x-access-token": `${token}`,
               },
           })
             .then(response => {
-                setEquipes(response.data);
+                setEmplois(response.data);
             })
             .catch(error => {
-                console.error("Une erreur est survenue lors du chargement des équipes", error);
+                console.error("Une erreur est survenue lors du chargement des emplois", error);
             });
     }, []);
 
@@ -35,7 +35,7 @@ const NewUserPage = () => {
         event.preventDefault();
 
         // Vérifier si tous les champs requis sont remplis
-        if (!nom || !prenom || !equipeId || !login || !password || !confirmPassword) {
+        if (!nom || !prenom || !emploiId || !login || !password || !confirmPassword) {
             setInputsFilled(false);
             setPasswordsMatch(true); // Réinitialiser l'état des mots de passe correspondants
             return;
@@ -56,7 +56,7 @@ const NewUserPage = () => {
         const newUser = {
             nom,
             prenom,
-            equipeId,
+            emploiId,
             login,
             password,
         };
@@ -93,11 +93,11 @@ const NewUserPage = () => {
                     <input type="text" value={prenom} onChange={(e) => setPrenom(e.target.value)} required placeholder="Saisir le prénom..." />
                 </label>
                 <label>
-                    Équipe :
-                    <select value={equipeId} onChange={(e) => setEquipeId(e.target.value)} required>
-                        <option value="">Sélectionnez une équipe</option>
-                        {equipes.map(equipe => (
-                            <option key={equipe.idEquipe} value={equipe.idEquipe}>{equipe.nomEquipe}</option>
+                    Emploi :
+                    <select value={emploiId} onChange={(e) => setEmploiId(e.target.value)} required>
+                        <option value="">Sélectionnez un emploi</option>
+                        {emplois.map(emploi => (
+                            <option key={emploi.id} value={emploi.id}>{emploi.nomEmploi}</option>
                         ))}
                     </select>
                 </label>
