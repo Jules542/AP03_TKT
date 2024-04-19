@@ -11,6 +11,7 @@ import NewUserPage from "./pages/NewUserPage.jsx";
 import "./stylesheets/main.scss";
 import Avertissements from "./pages/Avertissements.jsx";
 import NouveauAvertissement from "./pages/NouveauAvertissement.jsx";
+import HomePage from "./pages/HomePage.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,7 +24,7 @@ function App() {
           <ToastContainer />
             <Navbar />
             <Routes>
-              <Route path="/" element={<h1>Welcome to the homepage</h1>} />
+              <Route path="/" element={<HomePage />} />
               <Route path="/attractions" element={<Attractions />} />
               <Route path="/login" element={<Login />} />
               <Route
