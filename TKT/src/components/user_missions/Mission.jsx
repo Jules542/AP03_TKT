@@ -20,18 +20,29 @@ const Mission = ({ mission, onFormChange }) => {
 
     return (
         <div className="mission-container">
-            <div className="mission-title">
-                <h2>{mission.libMission}</h2>
-                <div className="mission-importance">
-                    {mission.libImportance}
+            <div className="mission">
+                <div className="mission-title">
+                    <h2>{mission.libMission}</h2>
                 </div>
-            </div>
-            <div className="mission-description">
-                <p>{mission.commentaire}</p>
-            </div>
-            <div className="mission-date">
-                <p>{mission.dateMission}</p>
-            </div>
+                <div className="mission-details">
+                    <div className="mission-description">
+                        <p>Description : {mission.commentaire}</p>
+                    </div>
+                    {mission.nomAttraction && (
+                    <div className="mission-attraction">
+                        <p>Attraction concernée : {mission.nomAttraction}</p>
+                    </div>
+                    )}
+                    {mission.nomRestaurant && (
+                        <div className="mission-restaurant">
+                            <p>Restaurant concerné : {mission.nomRestaurant}</p>
+                        </div>
+                    )}
+                    <div className="mission-date">
+                        <p>Date : {mission.dateMission.split('T')[0]}</p> {/* Récupère seulement la date */}
+                    </div>
+                </div>
+            </div>                
             <InputsValidation onSaveComment={handleSaveComment} onToggleCocher={handleToggleCocher} />
         </div>
     );

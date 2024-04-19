@@ -1,5 +1,4 @@
 .missions-OTD {
-    border: 1px solid blue;
     width: 98vw;
     margin: 0 auto;
 }
@@ -10,56 +9,48 @@
 }
 
 .mission-container {
-    position: relative;
-    color: white;
-    border: 1px solid white;
-    width: 30vw;
-    height: 32vh;
+    height: 400px;
+    width: 31.5vw;
+}
+
+.mission {
+    color: #FFFFFF;
+    width: 100%;
+    height: 250px;
     background-color: #5ACA58;
-    border: 2px solid black;
+    border: 2px solid #FFFFFF;
     border-radius: 15px;
-    overflow: hidden;
+    margin-bottom: 20px;
 }
 
 .mission-title {
-    height: 60px;
-    color: #000000;
-    font-size: 17px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-}
-
-.mission-title .mission-importance {
+    height: 50px;
+    color: #000000;
     background-color: #FFFFFF;
-    color:#000000;
-    padding: 8px 12px;
-    font-size: 14px;
+    font-size: 12px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 18px;
-    white-space: nowrap;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding-left: 15px;
+    border-bottom: 1px solid black;
 }
 
 .mission-list {
     display: flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
     margin: 0 auto;
     gap: 15px;
-    border: 1px solid red;
 }
 
 .mission-container .mission-description {
     max-height: 80px;
-    width: 94%;
-    margin: 0 auto;
-    overflow: auto;
     text-overflow: ellipsis;
 }
 
 .mission-container .mission-description p {
-    font-size: 14px;
-    margin: 0 auto;
     text-align: justify;
     -webkit-line-clamp: 3;
 }    
@@ -96,6 +87,8 @@
 
 .mission-comment-icon {
     cursor: pointer;
+    text-decoration: underline;
+    user-select: none;
 }
 
 .mission-comment-icon img {
@@ -150,7 +143,33 @@
 
   .mission-comment-textarea {
     position: absolute;
-    top: calc(100% + 10px); /* Positionnement en dessous de la div "mission-comment-icon" */
-    right: 0;
+    top: calc(100% + 10px);
+    right: 50;
     width: 100%;
+}
+
+.mission-comment-textarea textarea {
+    width: 95%;
+}
+
+.mission-details {
+    height: 75%;
+    width: 95%;
+    margin: 0 auto;
+    font-size: 17px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 1200px) {
+    .mission-container {
+        width: calc(50% - 15px); /* Moitié de la largeur moins la marge entre les missions */
+    }
+}
+
+@media screen and (max-width: 730px) {
+    .mission-details {
+        font-size: 15px;
+    }
 }

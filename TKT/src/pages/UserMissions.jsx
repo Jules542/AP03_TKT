@@ -4,15 +4,15 @@ import Mission from "../components/user_missions/Mission";
 import Button from "../components/user_missions/Button";
 import { UserContext } from "../context/UserContext";
 import { jwtDecode } from "jwt-decode";
-
+import { useNavigate } from "react-router-dom";
 
 const UserMissions = () => {
     const [missions, setMissions] = useState([]);
     const { token } = useContext(UserContext);
     const [formData, setFormData] = useState({}); // Utilisez un objet pour stocker les données de toutes les missions
+    const navigate = useNavigate();
 
     const handleFormChange = (missionId, key, value) => {
-        console.log("data", missionId, key, value);
         // Mettre à jour l'état avec les données de chaque mission
         setFormData(prevState => ({
             ...prevState,
@@ -24,7 +24,6 @@ const UserMissions = () => {
     };
 
     const sendDataToAPI = () => {
-        console.log(formData)
         // Effectuer la requête HTTP POST vers votre API avec toutes les données
         axios.put("http://localhost:3000/missionsUser", formData, {
             headers: {
@@ -34,6 +33,8 @@ const UserMissions = () => {
         })
             .then(response => {
                 console.log("Data sent successfully:", response.data);
+                window.alert("Les données ont été envoyées avec succès.");
+                window.location.reload(); // Rechargement de la page après l'envoi des données
             })
             .catch(error => {
                 console.error("Error sending data:", error);
@@ -66,9 +67,13 @@ const UserMissions = () => {
         <div className="missions-OTD">
             <h1><strong>Vos</strong> missions :</h1>
             <div className="mission-list">
-                {missions.map((mission, index) => (
-                    <Mission key={index} mission={mission} onFormChange={handleFormChange} />
-                ))}        
+                {missions.length === 0 ? (
+                    <p>Aucune mission disponible pour le moment.</p>
+                ) : (
+                    missions.map((mission, index) => (
+                        <Mission key={index} mission={mission} onFormChange={handleFormChange} />
+                    ))
+                )}      
             </div>
             <Button sendDataToAPI={sendDataToAPI} />
         </div>

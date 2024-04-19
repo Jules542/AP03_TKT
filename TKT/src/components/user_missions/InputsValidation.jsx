@@ -8,7 +8,6 @@ const InputsValidation = ({ onSaveComment, onToggleCocher }) => {
     const toggleCocher = () => {
         setCochee(!cochee)
         onToggleCocher(!cochee);
-        console.log(cochee);
     };
 
     const toggleAfficherTextarea = () => {
