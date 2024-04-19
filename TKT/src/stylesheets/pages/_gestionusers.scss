@@ -36,15 +36,12 @@
 }
 
 .tableau-listeusers td, .tableau-listeusers th {
-    max-width: 270px;
-    
+    max-width: 15vw;    
 }
-
-
 
 .tableau-listeusers table th {
     font-size: 20px;
-    width: 270px;
+    width: 15vw;
     height: 50px;
     @include themed {
         background-color: t("background-dark");
@@ -136,4 +133,17 @@
 .gestion-users{
     width: 98%;
     margin: 0 auto;
+}
+
+@media screen and (max-width: 970px) {
+    .tableau-listeusers table td {
+        font-size: 12px;
+    }
+    .tableau-listeusers table th {
+        font-size: 15px;
+        height: 40px;
+    }
+    .tableau-listeusers table .nb-mission-column {
+        width: 200px;
+    }
 }
