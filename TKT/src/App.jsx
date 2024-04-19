@@ -8,6 +8,7 @@ import Login from "./pages/Login.jsx";
 import NouvelleMission from "./pages/NouvelleMission.jsx";
 import GestionUsers from "./pages/GestionUsers.jsx";
 import NewUserPage from "./pages/NewUserPage.jsx";
+import UserMissions from "./pages/UserMissions.jsx";
 import "./stylesheets/main.scss";
 import Avertissements from "./pages/Avertissements.jsx";
 import NouveauAvertissement from "./pages/NouveauAvertissement.jsx";
@@ -42,9 +43,15 @@ function App() {
             <Route path="/avertissements" element={<Avertissements />} />
               <Route path="/gestion-utilisateurs" element={<GestionUsers />} />
               <Route path="/gestion-utilisateurs/new" element={<NewUserPage />} />
+            <Route
+              path="affectations/nouvelle"
+              element={<NouvelleMission />}
+            ></Route>
+            <Route path="/missions" element={<UserMissions />} />
             </Routes>
-          </Router>
-        </ThemeContextProvider>
+            </Router>
+            </ThemeContextProvider>
+            
       </UserProvider>
     </>
   );

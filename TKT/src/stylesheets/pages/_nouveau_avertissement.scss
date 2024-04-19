@@ -1,6 +1,6 @@
 @import "../base/variables";
 @import "../theme/default";
-.nouvelle-mission__form {
+.nouveau-avertissement__form {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,7 +8,7 @@
   height: 100%;
   padding: 20px;
 
-  & > .nouvelle-mission__wrapper {
+  & > .nouveau-avertissement__wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,7 +26,7 @@
     gap: 1rem;
   }
 
-  .nouvelle-misison__form-group {
+  .nouveau-avertissement__form-group {
     width: 100%;
     input,
     textarea,
@@ -49,6 +49,7 @@
     padding: 0.5rem 2rem;
     border: none;
     border-radius: 5px;
+    margin-top: 2rem;
     margin-bottom: 2rem;
     @include themed {
       background: linear-gradient(90deg, t("primary"), t("secondary"));

@@ -88,46 +88,61 @@ const NouveauAvertissement = () => {
     }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="libAvertissement"
-        value={formData.libAvertissement}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="commentaireAvertissement"
-        value={formData.commentaireAvertissement}
-        onChange={handleChange}
-      />
-      <select
-        name="idUserAvertissement"
-        value={formData.idUserAvertissement}
-        onChange={handleChange}
-      >
-        <option value="0">-- Selectionner un utilisateur </option>
-        {Array.isArray(users) &&
-          users.map((user, index) => (
-            <option key={index} value={user.idUser}>
-              {user.nom} {user.prenom}
-            </option>
-          ))}
-      </select>
-      <select
-        name="idNiveauAvertissement"
-        value={formData.idNiveauAvertissement}
-        onChange={handleChange}
-      >
-        <option value="0">-- Selectionner un niveau </option>
-        {Array.isArray(niveaux) &&
-          niveaux.map((niveau, index) => (
-            <option key={index} value={niveau.idNiveau}>
-              {niveau.libNiveau}
-            </option>
-          ))}
-      </select>
-      <button onClick={notify} type="submit">Submit</button>
+    <form className="nouveau-avertissement__form" onSubmit={handleSubmit}>
+      <div className="nouveau-avertissement__wrapper">
+        <h1>Ajouter un avertissement</h1>
+          <div className="nouveau-avertissement__form-group">
+            <label>Libelle de l'avertissement :</label>
+            <input
+              type="text"
+              name="libAvertissement"
+              value={formData.libAvertissement}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="nouveau-avertissement__form-group">
+          <label>Commentaire de l'avertissement :</label>
+            <input
+              type="text"
+              name="commentaireAvertissement"
+              value={formData.commentaireAvertissement}
+              onChange={handleChange}
+            />
+            </div>
+            <div className="nouveau-avertissement__form-group">
+            <label>Utilisateur :</label>
+            <select
+              name="idUserAvertissement"
+              value={formData.idUserAvertissement}
+              onChange={handleChange}
+            >
+              <option value="0">-- Selectionner un utilisateur </option>
+              {Array.isArray(users) &&
+                users.map((user, index) => (
+                  <option key={index} value={user.idUser}>
+                    {user.nom} {user.prenom}
+                  </option>
+                ))}
+            </select>
+            </div>
+            <div className="nouveau-avertissement__form-group">
+            <label>Niveau :</label>
+            <select
+              name="idNiveauAvertissement"
+              value={formData.idNiveauAvertissement}
+              onChange={handleChange}
+            >
+              <option value="0">-- Selectionner un niveau </option>
+              {Array.isArray(niveaux) &&
+                niveaux.map((niveau, index) => (
+                  <option key={index} value={niveau.idNiveau}>
+                    {niveau.libNiveau}
+                  </option>
+                ))}
+            </select>
+            <button onClick={notify} type="submit">Submit</button>
+          </div>
+      </div>
     </form>
   );
 };

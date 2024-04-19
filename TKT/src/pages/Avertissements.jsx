@@ -48,17 +48,23 @@ const Avertissements = () => {
 
   return (
     <div className="avertissements">
-      <Link to="/avertissements/nouveau">Nouvelle</Link>
-      <div className="avertissement-wrapper">
-      {avertissements.map((avertissement) => (
-        <Avertissement
-          key={avertissement.idAvertissement}
-          avertissement={avertissement}
-          users={users}
-          niveaux={niveaux}
-          fetchData={fetchData}
-        />
-      ))}
+      <div className="avertissements-wrapper">
+        <div className="avertissements-wrapper-first">
+          <p>Accueil &gt; Avertissements</p>
+          <h1>Avertissements</h1>
+        </div>
+        <Link to="/avertissements/nouveau" className="avertissement-new">Nouvelle</Link>
+        <div className="avertissements-wrapper-list">
+        {avertissements.map((avertissement) => (
+          <Avertissement
+            key={avertissement.idAvertissement}
+            avertissement={avertissement}
+            users={users}
+            niveaux={niveaux}
+            fetchData={fetchData}
+          />
+        ))}
+        </div>
       </div>
     </div>
   );
