@@ -290,6 +290,76 @@ app.get("/equipes", verifyToken, (req, res) => {
   );
 });
 
+app.get("/restaurants", verifyToken, (_, res) => {
+  connection.query(
+    "SELECT id,  nomRestaurant, descRestaurant FROM restaurant",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res
+          .status(500)
+          .send({ message: "An error occurred", error: error.message });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+app.get("/emplois", verifyToken, (_, res) => {
+  connection.query(
+    "SELECT id, nomEmploi, idEquipe FROM emploi",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  );
+});
+
+
+// Route pour obtenir les missions en fonction d'un idUser
+app.get("/missionsUser/:idUser", verifyToken, (req, res) => {
+  const idUser = req.params.idUser; // Utilisez req.params pour récupérer le paramètre de l'URL
+  //Requête SQL
+  connection.query("SELECT m.idMission, m.dateMission, m.libMission, m.commentaire, m.estTerminee, m.idUserMission, a.nomAttraction, r.nomRestaurant FROM mission m LEFT JOIN restaurant r ON m.idRestaurantMission = r.id LEFT JOIN attraction a ON m.idAttractionMission = a.idAttraction WHERE m.idUserMission = ? AND m.estTerminee = 0 AND (m.idAttractionMission IS NOT NULL OR m.idRestaurantMission IS NOT NULL OR (m.idAttractionMission IS NULL AND m.idRestaurantMission IS NULL));", [idUser], (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send({ message: "An error occurred" });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+app.put("/missionsUser", verifyToken, (req, res) => {
+  const updatedMissionData = req.body; // Les nouvelles données de la mission à mettre à jour
+
+  // Boucle à travers les clés de updatedMissionData et mettez à jour chaque mission individuellement
+  Object.keys(updatedMissionData).forEach(idMission => {
+    const { estTerminee, commentaire } = updatedMissionData[idMission];
+
+    connection.query(
+      "UPDATE mission SET estTerminee = ?, commentaire = ? WHERE idMission = ?",
+      [estTerminee, commentaire, idMission],
+      (error) => {
+        if (error) {
+          console.error(error);
+          res.status(500).send({ message: "An error occurred" });
+          return; // Retournez pour arrêter la boucle et ne pas envoyer de réponse multiple
+        }
+      }
+    );
+  });
+
+  // Après avoir mis à jour toutes les missions, envoyez une réponse réussie
+  res.status(200).send({ message: "Missions updated" });
+});
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
