@@ -48,7 +48,10 @@ const Avertissements = () => {
 
   return (
     <div className="avertissements">
-      <Link to="/avertissements/nouveau">Nouvelle</Link>
+      <p>Accueil &gt; Avertissements</p>
+      <h1>Avertissements</h1>
+      <Link to="/avertissements/nouveau" className="avertissement-new">Nouvelle</Link>
+      <div className="avertissement-container"> 
       <div className="avertissement-wrapper">
       {avertissements.map((avertissement) => (
         <Avertissement
@@ -59,6 +62,7 @@ const Avertissements = () => {
           fetchData={fetchData}
         />
       ))}
+      </div>
       </div>
     </div>
   );

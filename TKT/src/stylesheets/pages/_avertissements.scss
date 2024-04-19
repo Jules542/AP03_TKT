@@ -1,22 +1,95 @@
-.avertissement-wrapper img{
-    width: 5%;
-    cursor: pointer;
-}
-
+@import "../base/variables";
+@import "../theme/default";
 
 .avertissement-wrapper {
     display: flex;
-    gap: 1rem;
+    gap: 3.2rem;
     flex-wrap: wrap;
+    justify-content: flex-start;
+    max-width: 91.5%;
+}
+.avertissement-container {
+    display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+.avertissement-wrapper-title-del{
+    display: flex;
+    justify-content: space-between;
+}
+
+.avertissement-wrapper-title-del a{
+    & > svg {
+        width: 20px;
+        height: 20px;
+        margin-inline: 0.5rem;
+        & path {
+            @include themed {
+                fill: t("text");
+            }
+        }
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
 }
 
 .avertissement-wrapper-card{
     border-radius: 10px;
-    background-color: grey;
     padding: 1rem;
+    width: 30%;
+    @include themed {
+        background: t("background-light");
+        $color: t("background-dark");
+        $rgba: rgba($color, 0.25);
+        box-shadow: 0px 5px 20px 20px $rgba;
+      }
 }
 
-.avertissements > a{
-    margin-bottom: 5%;
+.avertissement-wrapper-value-edit{
+    display: flex;
+    justify-content: space-between;
 }
+
+.avertissement-wrapper-edit{
+    @include themed{
+        background: linear-gradient(90deg, t("primary"), t("secondary"));
+    }
+    padding: 0.05rem;
+    padding-left: 3%;
+    padding-right: 3%;
+    font-size: 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+
+.avertissement-new{
+    text-decoration: none;
+    display: inline-block;
+    margin-left:8.2%;
+    margin-top: -1%;
+    margin-bottom: 1.5%;
+    border-radius: 10px;
+    @include themed{
+        background: linear-gradient(90deg, t("primary"), t("secondary"));
+    }
+    padding: 0.7rem;
+    padding-left: 2%;
+    padding-right: 2%;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.avertissements h1{
+    margin-left: 8.2%;
+    margin-bottom: 2%;
+}
+.avertissements p{
+    margin-left: 8.4%;
+}
+
+

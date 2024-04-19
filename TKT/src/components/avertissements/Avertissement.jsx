@@ -6,6 +6,8 @@ import deleteImgDark from '../../assets/deleteIconDark.png';
 import { useContext } from 'react';
 import deleteImgWhite from '../../assets/deleteIconWhite.png';
 import { ThemeContext } from '../../context/ThemeContext';
+import CloseButton from '../common/Buttons';
+import CloseIcon from '../common/icons/CloseIcon';
 
 const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
   const user = users.find((user) => user.idUser === avertissement.idUserAvertissement);
@@ -125,34 +127,28 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
               </>
             ) : (
               <>
-              <div className="avertissement-wrapper-title">Libelle de l'avertissement</div>
+              <div className="avertissement-wrapper-title-del"><h3>Libelle de l'avertissement :</h3><a onClick={handleDelete}><CloseIcon></CloseIcon></a></div>
               <div className="avertissement-wrapper-value">{avertissement.libAvertissement}</div>
               <br/>
-              <div className="avertissement-wrapper-title">Commentaire de l'avertissement</div>
+              <div className="avertissement-wrapper-title"><h3>Commentaire de l'avertissement :</h3></div>
               <div className="avertissement-wrapper-value">{avertissement.commentaireAvertissement}</div>
               <br/>
-              <div className="avertissement-wrapper-title">Utilisateur</div>
+              <div className="avertissement-wrapper-title"><h3>Utilisateur :</h3></div>
               <div className="avertissement-wrapper-value">
                           {user
                             ? `${user.nom} ${user.prenom}`
                             : "Utilisateur non trouvé"}
                           </div>
               <br/>
-              <div className="avertissement-wrapper-title">Niveau</div>
-              <div className="avertissement-wrapper-value">
+              <div className="avertissement-wrapper-title"><h3>Niveau :</h3></div>
+              <div className="avertissement-wrapper-value-edit">
                           {niveau
                             ? `${niveau.libNiveau}`
                             : "Niveau non trouvée"}
+                          <button onClick={() => setEditing(true)} className='avertissement-wrapper-edit'>Edit</button>
                           </div>
               <br/>
-              <div className="avertissement-wrapper-title">Actions</div>
-              <div className="avertissement-wrapper-value">
-              <button onClick={() => setEditing(true)}>Edit</button></div>
-              {useContext(ThemeContext).isDark == true?(
-                <div><img src={deleteImgWhite} onClick={handleDelete}></img></div>
-              ) : (
-                <div><img src={deleteImgDark} onClick={handleDelete}></img></div>
-              )}
+
               <br/>
           </>
           )}
