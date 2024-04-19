@@ -14,7 +14,7 @@ const Tableau = (users) => {
     useEffect(() => {
         const token = localStorage.getItem("token");
         // Charger la liste des équipes disponibles depuis votre API lors du montage du composant
-        axios.get("http://localhost:3000/equipes", {
+        axios.get("http://localhost:3000/emplois", {
             headers: {
                 "Content-Type": "application/json",
                 "x-access-token": `${token}`,
@@ -81,7 +81,7 @@ const Tableau = (users) => {
             idUser: user.idUser,
             nom: user.nom,
             prenom: user.prenom,
-            idEquipeUser: user.idEquipeUser,
+            idEmploiUser: user.idEmploiUser,
         });
         console.log(user);
     }
@@ -147,8 +147,9 @@ const Tableau = (users) => {
                             <th>Nom</th>
                             <th>Prénom</th>
                             <th>Rôle</th>
-                            <th className="equipe-column">Équipe</th>
+                            <th className="equipe-column">Emploi</th>
                             <th className="nb-mission-column">Nombre de missions du jour</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -170,18 +171,18 @@ const Tableau = (users) => {
                                         </td>
                                     <td>
                                         <select
-                                            value={editedUser.idEquipeUser}
+                                            value={editedUser.idEmploiUser}
                                             onChange={(e) =>
                                             setEditedUser({
                                                 ...editedUser,
-                                                idEquipeUser: e.target.value,
+                                                idEmploiUser: e.target.value,
                                             })
                                             }
                                         >
                                             <option key="0" value="0">Aucune équipe</option>
                                             {equipes.map((equipe) => (
-                                            <option key={equipe.nomEquipe} value={equipe.idEquipe}>
-                                                {equipe.nomEquipe}
+                                            <option key={equipe.nomEmploi} value={equipe.id}>
+                                                {equipe.nomEmploi}
                                             </option>
                                             ))}
                                         </select>                                    
@@ -202,7 +203,7 @@ const Tableau = (users) => {
                                 <td>{user.nom}</td>
                                 <td>{user.prenom}</td>
                                 <td>{user.isAdmin === 1 ? 'Administrateur' : 'Utilisateur'}</td>
-                                <td>{user.nomEquipe !== null ? user.nomEquipe : 'Aucune équipe'}</td>
+                                <td>{user.npmEmploi !== null ? user.nomEmploi : 'Aucun Emploi'}</td>
                                 <td>{user.nbMissions}</td>
                                 {/* Afficher les icônes uniquement pour les utilisateurs non-administrateurs */}
                                 <td className="icon-column">{user.isAdmin === 0 && <ActionIcons idUser={user.idUser} onEdit={() => handleEditUser(user)} onDelete={handleDeleteUser} />}</td>  

@@ -120,11 +120,11 @@ app.get("/users", verifyToken, (req, res) => {
     return res.status(403).send({ message: "Unauthorized" });
   }
   connection.query(
-    "SELECT idUser, login, nom, prenom, isAdmin, nomEquipe, COALESCE(COUNT(idUserMission), 0) AS nbMissions FROM user LEFT JOIN equipe ON idEquipe = idEquipeUser LEFT JOIN mission ON idUser = idUserMission GROUP BY idUser, login, nom, prenom, isAdmin, nomEquipe;",
+    "SELECT idUser, login, nom, prenom, isAdmin, nomEmploi, idEmploiUser, COALESCE(COUNT(idUserMission), 0) AS nbMissions FROM user LEFT JOIN emploi ON emploi.id = idEmploiUser LEFT JOIN equipe ON emploi.idEquipe = equipe.idEquipe LEFT JOIN mission ON idUser = idUserMission GROUP BY idUser, login, nom, prenom, isAdmin, nomEmploi, idEmploiUser",
     (error, results) => {
       if (error) {
         console.error(error);
-        res.status(500).send({ message: "An error occurred" });
+        return res.status(500).send({ message: "An error occurred" });
       }
       res.status(200).send(results);
     }
@@ -137,12 +137,12 @@ app.put("/user/:id", verifyToken, (req, res) => {
   }
 
   const idUser = req.params.id;
-  const { nom, prenom, idEquipeUser } = req.body;
+  const { nom, prenom, idEmploiUser } = req.body;
 
   connection.query(
-    "UPDATE user SET nom = ?, prenom = ?, idEquipeUser = ? WHERE idUser = ?",
+    "UPDATE user SET nom = ?, prenom = ?, idEmploiUser = ? WHERE idUser = ?",
     [
-      nom, prenom, idEquipeUser, idUser
+      nom, prenom, idEmploiUser, idUser
     ],
     (error) => {
       if (error) {
@@ -285,6 +285,25 @@ app.get("/equipes", verifyToken, (req,res) => {
 
   connection.query(
     "SELECT idEquipe, nomEquipe FROM equipe",
+    (error, results) => {
+      if (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred" });
+      } else {
+        res.status(200).send(results);
+      }
+    }
+  )
+});
+
+//Route GET des emplois 
+app.get("/emplois", verifyToken, (req,res) => {
+  if (!req.isAdmin) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
+
+  connection.query(
+    "SELECT id, nomEmploi, idEquipe FROM emploi",
     (error, results) => {
       if (error) {
         console.error(error);
