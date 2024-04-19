@@ -6,6 +6,8 @@ import deleteImgDark from '../../assets/deleteIconDark.png';
 import { useContext } from 'react';
 import deleteImgWhite from '../../assets/deleteIconWhite.png';
 import { ThemeContext } from '../../context/ThemeContext';
+import CloseButton from '../common/Buttons';
+import CloseIcon from '../common/icons/CloseIcon';
 
 const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
   const user = users.find((user) => user.idUser === avertissement.idUserAvertissement);
@@ -65,7 +67,8 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
       <div className="avertissement-wrapper-card">
             {editing ? (
               <>
-              <div className="avertissement-wrapper-title">Libelle de l'avertissement</div>
+              <div className="avertissement-wrapper-libelle-edit"><h3>Libelle de l'avertissement :</h3></div>
+              <div className="avertissement-wrapper-libelle-edit">
               <input
                   type="text"
                   value={editedAvertissement.libAvertissement}
@@ -76,8 +79,10 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
                     })
                   }
                 />
-                <div className="avertissement-wrapper-title">Commentaire de l'avertissement</div>
-               <input
+              </div>
+              <div className="avertissement-wrapper-commentaire-edit"><h3>Commentaire de l'avertissement :</h3></div>
+              <div className="avertissement-wrapper-commentaire-edit">
+              <input
                     type="text"
                     value={editedAvertissement.commentaireAvertissement}
                     onChange={(e) =>
@@ -87,7 +92,9 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
                       })
                     }
                   />
-                  <div className="avertissement-wrapper-title">Utilisateur</div>
+                  </div>
+                  <div className="avertissement-wrapper-user-edit"><h3>Utilisateur :</h3></div>
+                  <div className="avertissement-wrapper-user-edit">
                   <select
                     value={editedAvertissement.idUserAvertissement}
                     onChange={(e) =>
@@ -103,7 +110,9 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
                       </option>
                     ))}
                   </select>
-                  <div className="avertissement-wrapper-title">Niveau</div>
+                  </div>
+                  <div className="avertissement-wrapper-niveau-edit"><h3>Niveau :</h3></div>
+                  <div className="avertissement-wrapper-niveau-edit">
                 <select
                     value={editedAvertissement.idNiveauAvertissement}
                     onChange={(e) =>
@@ -119,40 +128,37 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
                       </option>
                     ))}
                   </select>
-                  <div className="avertissement-wrapper-title">Actions</div>
-                  <button onClick={handleSubmit}>Save</button>
-                  <button onClick={() => setEditing(false)}>Cancel</button>
+                  </div>
+                  <div className="avertissement-wrapper-actions">
+                    <button onClick={handleSubmit} className='avertissement-wrapper-edit'>Save</button>
+                    <button onClick={() => setEditing(false)} className='avertissement-wrapper-edit'>Cancel</button>
+                  </div>
+                  
               </>
             ) : (
               <>
-              <div className="avertissement-wrapper-title">Libelle de l'avertissement</div>
-              <div className="avertissement-wrapper-value">{avertissement.libAvertissement}</div>
+              <div className="avertissement-wrapper-libelle"><h3>Libelle de l'avertissement :</h3><a onClick={handleDelete}><CloseIcon></CloseIcon></a></div>
+              <div className="avertissement-wrapper-libelle">{avertissement.libAvertissement}</div>
               <br/>
-              <div className="avertissement-wrapper-title">Commentaire de l'avertissement</div>
-              <div className="avertissement-wrapper-value">{avertissement.commentaireAvertissement}</div>
+              <div className="avertissement-wrapper-commentaire"><h3>Commentaire de l'avertissement :</h3></div>
+              <div className="avertissement-wrapper-commentaire"><p>{avertissement.commentaireAvertissement}</p></div>
               <br/>
-              <div className="avertissement-wrapper-title">Utilisateur</div>
-              <div className="avertissement-wrapper-value">
+              <div className="avertissement-wrapper-user"><h3>Utilisateur :</h3></div>
+              <div className="avertissement-wrapper-user">
                           {user
                             ? `${user.nom} ${user.prenom}`
                             : "Utilisateur non trouvé"}
                           </div>
               <br/>
-              <div className="avertissement-wrapper-title">Niveau</div>
-              <div className="avertissement-wrapper-value">
+              <div className="avertissement-wrapper-niveau"><h3>Niveau :</h3></div>
+              <div className="avertissement-wrapper-niveau">
                           {niveau
                             ? `${niveau.libNiveau}`
                             : "Niveau non trouvée"}
-                          </div>
+                          <button onClick={() => setEditing(true)} className='avertissement-wrapper-edit'>Edit</button>
+              </div>
               <br/>
-              <div className="avertissement-wrapper-title">Actions</div>
-              <div className="avertissement-wrapper-value">
-              <button onClick={() => setEditing(true)}>Edit</button></div>
-              {useContext(ThemeContext).isDark == true?(
-                <div><img src={deleteImgWhite} onClick={handleDelete}></img></div>
-              ) : (
-                <div><img src={deleteImgDark} onClick={handleDelete}></img></div>
-              )}
+
               <br/>
           </>
           )}
