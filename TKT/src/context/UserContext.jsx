@@ -62,13 +62,17 @@ export const UserProvider = ({ children }) => {
     return user !== null;
   };
 
+  const idUser = () => {
+    return user && user.id;
+  }
+
   const isAdmin = () => {
     return user && user.isAdmin;
   };
 
   return (
     <UserContext.Provider
-      value={{ user, token, handleLogin, handleLogout, isLoggedIn, isAdmin }}
+      value={{ user, token, handleLogin, handleLogout, isLoggedIn, isAdmin, idUser }}
     >
       {children}
     </UserContext.Provider>
