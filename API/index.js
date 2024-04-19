@@ -82,11 +82,11 @@ app.post("/register", verifyToken, (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).send({ message: "Unauthorized" });
   }
-  const { nom, prenom, login, password, equipeId } = req.body;
+  const { nom, prenom, login, password, emploiId } = req.body;
   bcrypt.hash(password, saltRound, function (err, hash) {
     connection.query(
-      "INSERT INTO user (nom, prenom, login, password, isAdmin, idEquipeUser) VALUES (?, ?, ?, ?, ?, ?)",
-      [nom, prenom, login, hash, 0, equipeId],
+      "INSERT INTO user (nom, prenom, login, password, isAdmin, idEmploiUser) VALUES (?, ?, ?, ?, ?, ?)",
+      [nom, prenom, login, hash, 0, emploiId],
       (error) => {
         if (error) {
           console.error(error);
