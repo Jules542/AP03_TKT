@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const NouvelleMission = () => {
-  const { token } = useContext(UserContext);
+  const { token, isAdmin, isLoggedIn } = useContext(UserContext);
   const [missions, setMissions] = useState([]);
   const [users, setUsers] = useState([]);
   const [attractions, setAttractions] = useState([]);
@@ -162,6 +162,9 @@ const NouvelleMission = () => {
       });
   };
   useEffect(() => {
+    if (!isLoggedIn() || !isAdmin()) {
+      navigate("/");
+    }
     fetchData();
   }, []);
 
