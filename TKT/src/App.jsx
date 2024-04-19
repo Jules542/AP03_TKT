@@ -48,6 +48,10 @@ function App() {
               element={<NouvelleMission />}
             ></Route>
             <Route path="/missions" element={<UserMissions />} />
+            </Routes>
+            </Router>
+            </ThemeContextProvider>
+            
       </UserProvider>
     </>
   );
