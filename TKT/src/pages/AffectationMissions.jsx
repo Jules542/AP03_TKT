@@ -14,6 +14,8 @@ const AffectationMissions = () => {
   const { isAdmin, isLoggedIn } = useContext(UserContext);
   const navigate = useNavigate();
 
+  console.log(missions);
+
   const fetchData = () => {
     const token = localStorage.getItem("token");
     // Get attractions

@@ -20,7 +20,7 @@
   margin-bottom: 2rem;
   @include themed {
     background: linear-gradient(90deg, t("primary"), t("secondary"));
-    color: t("background-dark");
+    color: t("text-dark");
   }
   text-decoration: none;
   &:hover {
@@ -47,13 +47,16 @@
   & > tbody > tr > td:last-child {
     border-right: none;
   }
-  & > tbody > tr:nth-child(2n) {
-    background-color: #f2f2f2;
+  & > tbody > tr:nth-child(2n),
+  & > tbody > tr:nth-child(2n) > select {
+    @include themed {
+      background-color: t("background-dark");
+    }
   }
   & > thead > tr > th {
     @include themed {
-      background-color: t("text-dark");
-      color: t("background-light");
+      background-color: t("background-dark");
+      color: t("text-light");
     }
   }
 }
@@ -73,17 +76,22 @@
       }
     }
   }
-  .affectation__table tr td:nth-child(odd) {
+  .affectation__table tr td:nth-child(odd),
+  .affectation__table tr td:nth-child(odd) input,
+  .affectation__table tr td:nth-child(odd) select {
     @include themed {
-      background-color: t("background-light");
+      background-color: t("background-light") !important;
+      color: t("text") !important;
     }
   }
-  .affectation__table tr td:nth-child(even) {
+  .affectation__table tr td:nth-child(even),
+  .affectation__table tr td:nth-child(even) input,
+  .affectation__table tr td:nth-child(even) select {
     @include themed {
-      background-color: t("background-dark");
+      background-color: t("background-dark") !important;
+      color: t("text") !important;
     }
   }
-
   .affectation__table > tbody > tr > td {
     border-right: none;
   }
@@ -125,6 +133,7 @@
 
   .affectation__table td::before {
     content: attr(data-label);
+    min-width: 9rem;
     text-transform: uppercase;
     font-weight: bold;
     display: inline-block;
@@ -134,8 +143,8 @@
     text-align-last: left;
     margin-right: 1rem;
     @include themed {
-      color: t("background-light");
-      background: t("text-dark");
+      color: t("text-light");
+      background: t("background-dark");
     }
   }
   .affectation__table > tbody > tr > td:last-child {

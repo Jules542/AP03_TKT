@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { formatDate } from "../../utils/date";
+import BackIcon from "../common/icons/BackIcon";
+import CheckIcon from "../common/icons/CheckIcon";
 import CloseIcon from "../common/icons/CloseIcon";
 import EditIcon from "../common/icons/EditIcon";
 
@@ -275,9 +277,15 @@ const Mission = ({
                 </select>
               )}
             </td>
-            <td>
-              <button onClick={handleSubmit}>Save</button>
-              <button onClick={() => setEditing(false)}>Cancel</button>
+            <td className="mission__actions" data-label="Actions">
+              <div>
+                <a onClick={handleSubmit}>
+                  <CheckIcon />
+                </a>
+                <a onClick={() => setEditing(false)}>
+                  <BackIcon />
+                </a>
+              </div>
             </td>
           </>
         ) : (

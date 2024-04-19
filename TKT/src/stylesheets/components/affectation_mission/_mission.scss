@@ -19,45 +19,67 @@
     }
   }
 }
-.affectation__table > tbody > tr > td {
-  & > input[type="date"] {
-    width: 100%;
-    height: 36px;
-    padding: 0 !important;
-    margin: 0 !important;
-    box-sizing: border-box;
-    outline: none;
-
-    &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    &::-webkit-calendar-picker-indicator {
-      background: transparent;
+.affectation__table > tbody > tr {
+  &:nth-child(odd) > td > * {
+    @include themed {
+      background: t("background-light");
+      color: t("text");
     }
   }
-  & > input {
-    width: 100%;
-    height: 36px;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none;
-    outline: none;
-    box-sizing: border-box;
+  &:nth-child(even) > td > * {
+    @include themed {
+      background: t("background-dark");
+      color: t("text");
+    }
   }
-  & > select {
-    width: 100%;
-    height: 36px;
-    padding: 0 !important;
-    margin: 0 !important;
-    border: none;
-    outline: none;
-    box-sizing: border-box;
+  & > td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    & > input[type="date"] {
+      width: 100%;
+      height: 36px;
+      padding: 0 !important;
+      margin: 0 !important;
+      box-sizing: border-box;
+      outline: none;
+
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &::-webkit-calendar-picker-indicator {
+        background: transparent;
+      }
+    }
+    & > input {
+      width: 100%;
+      height: 36px;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none;
+      outline: none;
+      box-sizing: border-box;
+    }
+    & > select {
+      width: 100%;
+      height: 36px;
+      padding: 0 !important;
+      margin: 0 !important;
+      border: none;
+      outline: none;
+      box-sizing: border-box;
+    }
+    & > input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      box-sizing: border-box;
+    }
   }
-  & > input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    box-sizing: border-box;
-  }
+}
+.mission__actions > a > svg {
+  width: 16px;
+  height: 16px;
 }
