@@ -1,15 +1,12 @@
 import React from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import deleteImgDark from '../../assets/deleteIconDark.png';
-import { useContext } from 'react';
-import deleteImgWhite from '../../assets/deleteIconWhite.png';
-import { ThemeContext } from '../../context/ThemeContext';
-import CloseButton from '../common/Buttons';
+import { useEffect, useState, useContext } from 'react';
 import CloseIcon from '../common/icons/CloseIcon';
+import { Link } from 'react-router-dom';
+import { UserContext } from "../../context/UserContext";
 
 const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
+  const { isLoggedIn, isAdmin } = useContext(UserContext);
   const user = users.find((user) => user.idUser === avertissement.idUserAvertissement);
   const niveau = niveaux.find((niveau) => niveau.idNiveau === avertissement.idNiveauAvertissement);
   const [editing, setEditing] = useState(false);
@@ -137,7 +134,11 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
               </>
             ) : (
               <>
-              <div className="avertissement-wrapper-libelle"><h3>Libelle de l'avertissement :</h3><a onClick={handleDelete}><CloseIcon></CloseIcon></a></div>
+              <div className="avertissement-wrapper-libelle"><h3>Libelle de l'avertissement :</h3>
+                {isLoggedIn() && isAdmin() ? (
+                  <Link onClick={handleDelete}><CloseIcon></CloseIcon></Link>
+                ) : null}
+              </div>
               <div className="avertissement-wrapper-libelle">{avertissement.libAvertissement}</div>
               <br/>
               <div className="avertissement-wrapper-commentaire"><h3>Commentaire de l'avertissement :</h3></div>
@@ -155,7 +156,9 @@ const Avertissement = ({avertissement, users, niveaux, fetchData}) => {
                           {niveau
                             ? `${niveau.libNiveau}`
                             : "Niveau non trouvée"}
-                          <button onClick={() => setEditing(true)} className='avertissement-wrapper-edit'>Edit</button>
+                            {isLoggedIn() && isAdmin() ? (
+                              <Link onClick={() => setEditing(true)} className='avertissement-wrapper-edit'>Edit</Link>
+                            ) : null}
               </div>
               <br/>
 

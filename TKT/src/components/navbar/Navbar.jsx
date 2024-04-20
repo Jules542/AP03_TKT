@@ -21,11 +21,9 @@ const Navbar = () => {
           <li>
             <Link to="/">Home</Link>
           </li>
-          {isLoggedIn() && isAdmin() && (
           <li>
             <Link to="/avertissements">Avertissements</Link>
           </li>
-          )}
           <li>
             <Link to="/attractions">Attractions</Link>
           </li>
