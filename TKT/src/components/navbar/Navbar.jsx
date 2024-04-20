@@ -41,11 +41,18 @@ const Navbar = () => {
               <li>
                 <Link to="/">Home</Link>
               </li>
-              {isLoggedIn() && isAdmin() && (
+              {isLoggedIn() ? (
+                <li>
+                  <Link to="/missions" onClick={toggleMenu}>
+                    Missions
+                  </Link>
+                </li>
+              ) : null}
+              {isLoggedIn() && isAdmin() ? (
                 <li>
                   <Link to="/avertissements">Avertissements</Link>
                 </li>
-              )}
+              ) : null}
               <li>
                 <Link to="/attractions">Attractions</Link>
               </li>
@@ -104,13 +111,20 @@ const Navbar = () => {
                     Home
                   </Link>
                 </li>
-                {isLoggedIn() && isAdmin() && (
+                {isLoggedIn() ? (
+                  <li>
+                    <Link to="/missions" onClick={toggleMenu}>
+                      Missions
+                    </Link>
+                  </li>
+                ) : null}
+                {isLoggedIn() && isAdmin() ? (
                   <li>
                     <Link to="/avertissements" onClick={toggleMenu}>
                       Avertissements
                     </Link>
                   </li>
-                )}
+                ) : null}
                 <li>
                   <Link to="/attractions" onClick={toggleMenu}>
                     Attractions
