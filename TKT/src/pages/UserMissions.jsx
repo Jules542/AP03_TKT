@@ -43,8 +43,7 @@ const UserMissions = () => {
         const decodedToken = jwtDecode(token);
         const userId = decodedToken.id;
 
-            axios
-                .get(`http://localhost:3000/missionsUser/${userId}`, {
+            axios.get(`http://localhost:3000/missionsUser/${userId}`, {
                     headers: {
                         "Content-Type": "application/json",
                         "x-access-token": token,
@@ -52,6 +51,7 @@ const UserMissions = () => {
                 })          
                 .then((response) => {
                     setMissions(response.data);
+                    console.log(response.data);
                 })
                 .catch((error) => {
                     console.error(

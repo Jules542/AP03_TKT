@@ -203,7 +203,7 @@ const Tableau = (users) => {
                                 <td>{user.nom}</td>
                                 <td>{user.prenom}</td>
                                 <td>{user.isAdmin === 1 ? 'Administrateur' : 'Utilisateur'}</td>
-                                <td>{user.npmEmploi !== null ? user.nomEmploi : 'Aucun Emploi'}</td>
+                                <td>{user.nomEmploi !== null ? user.nomEmploi : 'Aucun Emploi'}</td>
                                 <td>{user.nbMissions}</td>
                                 {/* Afficher les icônes uniquement pour les utilisateurs non-administrateurs */}
                                 <td className="icon-column">{user.isAdmin === 0 && <ActionIcons idUser={user.idUser} onEdit={() => handleEditUser(user)} onDelete={handleDeleteUser} />}</td>  

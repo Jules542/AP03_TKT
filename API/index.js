@@ -45,7 +45,7 @@ function verifyToken(req, res, next) {
 app.post("/login", (req, res) => {
   const { login, password } = req.body;
   connection.query(
-    "SELECT login, password, isAdmin FROM user WHERE login = ?",
+    "SELECT idUser, login, password, isAdmin FROM user WHERE login = ?",
     [login],
     (error, results) => {
       if (error) {
@@ -59,7 +59,7 @@ app.post("/login", (req, res) => {
           bcrypt.compare(password, user.password, function (err, result) {
             if (result == true) {
               const token = jwt.sign(
-                { id: user.id, isAdmin: user.isAdmin },
+                { id: user.idUser, isAdmin: user.isAdmin },
                 process.env.JWT_SECRET,
                 {
                   expiresIn: 86400,
@@ -82,11 +82,11 @@ app.post("/register", verifyToken, (req, res) => {
   if (!req.isAdmin) {
     return res.status(403).send({ message: "Unauthorized" });
   }
-  const { nom, prenom, login, password, equipeId } = req.body;
+  const { nom, prenom, login, password, emploiId } = req.body;
   bcrypt.hash(password, saltRound, function (err, hash) {
     connection.query(
-      "INSERT INTO user (nom, prenom, login, password, isAdmin, idEquipeUser) VALUES (?, ?, ?, ?, ?, ?)",
-      [nom, prenom, login, hash, 0, equipeId],
+      "INSERT INTO user (nom, prenom, login, password, isAdmin, idEmploiUser) VALUES (?, ?, ?, ?, ?, ?)",
+      [nom, prenom, login, hash, 0, emploiId],
       (error) => {
         if (error) {
           console.error(error);
@@ -120,7 +120,7 @@ app.get("/users", verifyToken, (req, res) => {
     return res.status(403).send({ message: "Unauthorized" });
   }
   connection.query(
-    "SELECT idUser, login, nom, prenom, isAdmin, nomEquipe, idEmploiUser, COALESCE(COUNT(idUserMission), 0) AS nbMissions FROM user LEFT JOIN emploi ON Emploi.id = idEmploiUser LEFT JOIN equipe ON Emploi.idEquipe = Equipe.idEquipe LEFT JOIN mission ON idUser = idUserMission GROUP BY idUser, login, nom, prenom, isAdmin, nomEquipe, idEmploiUser;",
+    "SELECT idUser, login, nom, prenom, isAdmin, nomEmploi, idEmploiUser, COALESCE(COUNT(idUserMission), 0) AS nbMissions FROM user LEFT JOIN emploi ON emploi.id = idEmploiUser LEFT JOIN equipe ON emploi.idEquipe = equipe.idEquipe LEFT JOIN mission ON idUser = idUserMission GROUP BY idUser, login, nom, prenom, isAdmin, nomEmploi, idEmploiUser",
     (error, results) => {
       if (error) {
         console.error(error);
@@ -150,11 +150,11 @@ app.put("/user/:id", verifyToken, (req, res) => {
   }
 
   const idUser = req.params.id;
-  const { nom, prenom, idEquipeUser } = req.body;
+  const { nom, prenom, idEmploiUser } = req.body;
 
   connection.query(
-    "UPDATE user SET nom = ?, prenom = ?, idEquipeUser = ? WHERE idUser = ?",
-    [nom, prenom, idEquipeUser, idUser],
+    "UPDATE user SET nom = ?, prenom = ?, idEmploiUser = ? WHERE idUser = ?",
+    [nom, prenom, idEmploiUser, idUser],
     (error) => {
       if (error) {
         console.error(error);
@@ -442,4 +442,42 @@ app.get("/niveaux", (req, res) => {
       }
     }
   );
+});
+
+// Route pour obtenir les missions en fonction d'un idUser
+app.get("/missionsUser/:idUser", verifyToken, (req, res) => {
+  const idUser = req.params.idUser; // Utilisez req.params pour récupérer le paramètre de l'URL
+  //Requête SQL
+  connection.query("SELECT m.idMission, m.dateMission, m.libMission, m.commentaire, m.estTerminee, m.idUserMission, a.nomAttraction, r.nomRestaurant FROM mission m LEFT JOIN restaurant r ON m.idRestaurantMission = r.id LEFT JOIN attraction a ON m.idAttractionMission = a.idAttraction WHERE m.idUserMission = ? AND m.estTerminee = 0 AND (m.idAttractionMission IS NOT NULL OR m.idRestaurantMission IS NOT NULL OR (m.idAttractionMission IS NULL AND m.idRestaurantMission IS NULL));", [idUser], (error, results) => {
+    if (error) {
+      console.error(error);
+      res.status(500).send({ message: "An error occurred" });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+app.put("/missionsUser", verifyToken, (req, res) => {
+  const updatedMissionData = req.body; // Les nouvelles données de la mission à mettre à jour
+
+  // Boucle à travers les clés de updatedMissionData et mettez à jour chaque mission individuellement
+  Object.keys(updatedMissionData).forEach(idMission => {
+    const { estTerminee, commentaire } = updatedMissionData[idMission];
+
+    connection.query(
+      "UPDATE mission SET estTerminee = ?, commentaire = ? WHERE idMission = ?",
+      [estTerminee, commentaire, idMission],
+      (error) => {
+        if (error) {
+          console.error(error);
+          res.status(500).send({ message: "An error occurred" });
+          return; // Retournez pour arrêter la boucle et ne pas envoyer de réponse multiple
+        }
+      }
+    );
+  });
+
+  // Après avoir mis à jour toutes les missions, envoyez une réponse réussie
+  res.status(200).send({ message: "Missions updated" });
 });
