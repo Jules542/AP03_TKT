@@ -1,0 +1,167 @@
+@import "../base/variables";
+@import "../theme/default";
+
+.avertissements-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 5%;
+}
+
+
+
+.avertissement-wrapper-libelle a{
+    & > svg {
+        margin-block:1rem;
+        width: 20px;
+        height: 20px;
+        & path {
+            @include themed {
+                fill: t("text");
+            }
+        }
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+}
+
+.avertissement-wrapper-libelle{
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 1rem;
+}
+.avertissement-wrapper-libelle h3{
+    margin-block:1rem;
+}
+
+.avertissement-wrapper-libelle-edit input{
+    margin-bottom: 1rem;
+}
+
+.avertissement-wrapper-libelle-edit{
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 1rem;
+}
+.avertissement-wrapper-libelle-edit h3{
+    margin-top:1rem;
+}
+
+.avertissement-wrapper-commentaire{
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 1rem;
+}
+
+.avertissement-wrapper-actions{
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 1rem;
+
+}
+
+.avertissement-wrapper-user{
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 1rem;
+}
+
+.avertissement-wrapper-user-edit{
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 1rem;
+}
+
+.avertissement-wrapper-user-edit select{
+    margin-bottom: 1rem;
+}
+
+.avertissement-wrapper-niveau{
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 1rem;
+}
+
+.avertissement-wrapper-niveau-edit{
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 1rem;
+}
+
+.avertissement-wrapper-niveau-edit select{
+    margin-bottom: 2rem;
+}
+
+.avertissements-wrapper-list{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-right: 5%;
+    gap: 4rem;
+}
+
+.avertissement-wrapper-card{
+    flex: 1 0 30%;  // 30% to allow for 3 cards per row and some space around
+    @include themed {
+        background: t("background-light");
+        $color: t("background-dark");
+        $rgba: rgba($color, 0.25);
+        box-shadow: 0px 5px 20px 20px $rgba;
+      }
+    border-radius: 10px;
+    max-width: 481px;
+    min-width: 336px;
+    max-height: 340px;
+    overflow: hidden;
+}
+
+.avertissement-wrapper-commentaire p{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.avertissement-wrapper-commentaire-edit{
+    display: flex;
+    justify-content: space-between;
+    margin-inline: 1rem;
+}
+
+.avertissement-wrapper-commentaire-edit input{
+    margin-bottom: 1rem;
+}
+
+.avertissement-wrapper-edit{
+    @include themed{
+        background: linear-gradient(90deg, t("primary"), t("secondary"));
+    }
+    width: min-content;
+    padding: 0.5rem 2rem;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+    text-decoration: none;
+    cursor: pointer;
+    color: rgb(194, 238, 196);
+}
+
+
+
+.avertissement-new{
+    text-decoration: none;
+    @include themed{
+        background: linear-gradient(90deg, t("primary"), t("secondary"));
+    }
+    width: min-content;
+    padding: 0.5rem 2rem;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+    color: rgb(194, 238, 196);
+}
+
+@media screen and (max-width: 1680px) {
+    .avertissements-wrapper-list {
+        margin-right: 5rem;
+    }
+}

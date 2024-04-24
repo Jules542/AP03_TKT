@@ -1,0 +1,173 @@
+@import "../base/variables";
+@import "../theme/default";
+
+.affectation__wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-left: 4.5%;
+}
+.affectation__header {
+  padding-bottom: 1rem;
+  & > h1 {
+    font-weight: 900;
+  }
+}
+
+.affectation__new {
+  width: min-content;
+  padding: 0.5rem 2rem;
+  border-radius: 5px;
+  margin-bottom: 2rem;
+  @include themed {
+    background: linear-gradient(90deg, t("primary"), t("secondary"));
+    color: t("text-dark");
+  }
+  text-decoration: none;
+  &:hover {
+    cursor: pointer;
+    @include themed {
+      color: t("background-light");
+      background: linear-gradient(120deg, t("primary"), t("secondary"));
+    }
+  }
+}
+
+.affectation__table {
+  max-width: 96.5%;
+  border: 1px solid $background-border;
+  padding: 1rem;
+  border-radius: 10px;
+  border-collapse: collapse;
+  & > tbody > tr > td,
+  & > thead > tr > th {
+    border-right: 1px solid $background-border;
+    text-align: center;
+  }
+  & > thead > tr > th:last-child,
+  & > tbody > tr > td:last-child {
+    border-right: none;
+  }
+  & > tbody > tr:nth-child(2n),
+  & > tbody > tr:nth-child(2n) > select {
+    @include themed {
+      background-color: t("background-dark");
+    }
+  }
+  & > thead > tr > th {
+    @include themed {
+      background-color: t("background-dark");
+      color: t("text-light");
+    }
+  }
+}
+
+@media only screen and (max-width: 1368px) {
+  .affectation__table {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border-radius: 0px;
+    border: none;
+    & > tbody {
+      height: 100%;
+      width: 100%;
+      & > tr {
+        border: 1px solid $background-border;
+      }
+    }
+  }
+  .affectation__table tr td:nth-child(odd),
+  .affectation__table tr td:nth-child(odd) input,
+  .affectation__table tr td:nth-child(odd) select {
+    @include themed {
+      background-color: t("background-light") !important;
+      color: t("text") !important;
+    }
+  }
+  .affectation__table tr td:nth-child(even),
+  .affectation__table tr td:nth-child(even) input,
+  .affectation__table tr td:nth-child(even) select {
+    @include themed {
+      background-color: t("background-dark") !important;
+      color: t("text") !important;
+    }
+  }
+  .affectation__table > tbody > tr > td {
+    border-right: none;
+  }
+
+  .affectation__table thead {
+    display: none;
+  }
+
+  .affectation__table tbody {
+    width: 100%;
+    display: block;
+    & > tr {
+      margin: 0;
+      margin-bottom: 1rem;
+      &:nth-last-child(1) {
+        margin-bottom: 0;
+      }
+      & > td {
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  .affectation__table tr {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .affectation__table td {
+    display: flex;
+    justify-content: flex-start;
+
+    padding-left: 1rem;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .affectation__table td::before {
+    content: attr(data-label);
+    min-width: 9rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: inline-block;
+    white-space: nowrap;
+    width: 140px;
+    padding-left: 1rem;
+    text-align-last: left;
+    margin-right: 1rem;
+    @include themed {
+      color: t("text-light");
+      background: t("background-dark");
+    }
+  }
+  .affectation__table > tbody > tr > td:last-child {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .affectation__table > tbody > tr > td:last-child > div {
+    display: flex;
+    justify-self: right;
+    align-items: center;
+    & > a {
+      & > svg {
+        padding: 0;
+        margin: 0 !important;
+        width: 16px;
+        height: 16px;
+        & path {
+          @include themed {
+            fill: t("text");
+          }
+        }
+      }
+    }
+  }
+}
